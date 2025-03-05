@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/w41k4z/m1p12mean-kanto-rico#readme",
+  "bugs": {
+    "url": "https://github.com/w41k4z/m1p12mean-kanto-rico/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/w41k4z/m1p12mean-kanto-rico.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=prod node src/server.js",
+    "dev": "cross-env NODE_ENV=dev nodemon src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1",
+    "server": "file:"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9"
+  }
+}
