@@ -1,12 +1,15 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('./auth/passport');
 
-const app = express();
+const server = express();
 
 // Middlewares
-app.use(cors());
-app.use(express.json());
+server.use(cors());
+server.use(express.json());
+server.use(passport.initialize());
 
 // Routes
+server.use('/api/auth', require('../controllers/auth.controller'));
 
-module.exports = app;
+module.exports = server;
