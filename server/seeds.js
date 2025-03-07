@@ -9,17 +9,16 @@ mongodb.connect().then(async () => {
     const roles = ['client', 'manager', 'mechanic'];
     const roleModels = {};
     for(const role of roles) {
-        const existingRole = await Role.findOne({ name: role });
+        let existingRole = await Role.findOne({ name: role });
         if (!existingRole) {
             existingRole = await Role.create({ name: role });
         }
-        console.log('Role seeded:', role);
         roleModels[role] = existingRole;
     }
     console.log('Roles seeded:', roleModels);
 
     console.log('Seeding manager user..');
-    const existingManager = await User.findOne({ username: 'admin@example.com' });
+    let existingManager = await User.findOne({ username: 'admin@example.com' });
     if (!existingManager) {
         existingManager = await User.create({
             firstName: 'Jean',
