@@ -13,7 +13,7 @@ module.exports = new LocalStrategy(async (username, password, done) => {
         if (!await user.comparePassword(password)) {
             return done(null, false, { message: 'Invalid credentials' });
         }
-        return done(null, user);
+        return done(null, await user.populate('role'));
     } catch (error) {
         return done(error, false);
     }
