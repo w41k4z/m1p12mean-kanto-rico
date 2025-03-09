@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const passport = require('passport');
-const User = require('../models/User');
 
 const generateToken = require('../services/jwt.service').generateToken;
 const createUser = require('../services/user.factory.service').createUser;
