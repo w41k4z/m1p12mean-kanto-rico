@@ -3,6 +3,7 @@ const passport = require('passport');
 
 const generateToken = require('../services/jwt.service').generateToken;
 const createUser = require('../services/user.factory.service').createUser;
+const Roles = require('../config/roles');
 
 router.post('/sign-in', passport.authenticate('local', { session: false }), (req, res) => {
     const token = generateToken(req.user);
@@ -16,10 +17,10 @@ router.post('/sign-up', async (req, res, next) => {
             lastName: req.body.lastName,
             username: req.body.username,
             password: req.body.password,
-            roleName: req.body.roleName
+            roleName: Roles.CLIENT
         });
         await newUser.save();
-        res.json({ message: 'User created' });
+        res.json({ message: 'Client account created' });
     } catch (error) {
         next(error);
     }
