@@ -1,12 +1,26 @@
 const express = require('express');
 const cors = require('cors');
+const passport = require('./auth/passport');
+const createHttpError = require('http-errors');
 
-const app = express();
+const server = express();
 
 // Middlewares
-app.use(cors());
-app.use(express.json());
+server.use(cors());
+server.use(express.json());
+server.use(passport.initialize());
 
 // Routes
+server.use('/api/auth', require('../controllers/auth.controller'));
 
-module.exports = app;
+// Error handling
+server.use((req, res, next) => {
+    next(createHttpError(404, "Resource not found"));
+});
+server.use((err, req, res, next) => {
+    let errorMessage = err instanceof Error ? err.message : "An unknown error has occurred";
+    let statusCode = err.status || 500;
+    return res.status(statusCode).json({ message: errorMessage });
+});
+
+module.exports = server;

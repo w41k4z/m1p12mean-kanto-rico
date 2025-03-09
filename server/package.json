@@ -17,17 +17,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=prod node src/server.js",
-    "dev": "cross-env NODE_ENV=dev nodemon src/server.js"
+    "dev": "cross-env NODE_ENV=dev nodemon src/server.js",
+    "seed": "node seeds.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
     "server": "file:"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "crypto": "^1.0.1",
     "nodemon": "^3.1.9"
   }
 }
