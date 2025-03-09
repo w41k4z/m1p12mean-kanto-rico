@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const passport = require('./auth/passport');
 const createHttpError = require('http-errors');
+const authorize = require('../middlewares/authorization.middleware');
+const Roles = require('./roles');
 
 const server = express();
 
@@ -12,6 +14,12 @@ server.use(passport.initialize());
 
 // Routes
 server.use('/api/auth', require('../controllers/auth.controller'));
+server.use(
+    '/api/accounts',
+    passport.authenticate('jwt', {session: false}),
+    authorize([Roles.MANAGER]),
+    require('../controllers/account.controller')
+);
 
 // Error handling
 server.use((req, res, next) => {
