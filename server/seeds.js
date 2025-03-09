@@ -6,7 +6,7 @@ const Role = require('./src/models/Role');
 
 mongodb.connect().then(async () => {
     console.log('Seeding roles..');
-    const roles = ['client', 'manager', 'mechanic'];
+    const roles = Object.values(require('./src/config/roles'));
     const roleModels = {};
     for(const role of roles) {
         let existingRole = await Role.findOne({ name: role });
