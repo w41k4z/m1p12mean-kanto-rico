@@ -27,11 +27,11 @@ import { ToastModule } from 'primeng/toast';
 import { SliderModule } from 'primeng/slider';
 import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 
 @NgModule({
-    declarations: [
-        AppComponent, NotfoundComponent, MydashboardComponent
-    ],
+    declarations: [AppComponent, NotfoundComponent, MydashboardComponent],
     imports: [
         AppRoutingModule,
         AppLayoutModule,
@@ -47,13 +47,23 @@ import { FormsModule } from '@angular/forms';
         DropdownModule,
         ProgressBarModule,
         ToastModule,
-        FormsModule
+        FormsModule,
     ],
     providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true,
+        },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        CountryService,
+        CustomerService,
+        EventService,
+        IconService,
+        NodeService,
+        PhotoService,
+        ProductService,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
