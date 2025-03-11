@@ -1,4 +1,7 @@
 const router =  require('express').Router();
+const passport = require('../config/auth/passport');
+const Roles = require('../config/roles');
+
 const createPrestation = require('../services/prestation.service').createPrestation;
 const getAllPrestations = require('../services/prestation.service').getAllPrestations;
 const updatePrestation = require('../services/prestation.service').updatePrestation;
