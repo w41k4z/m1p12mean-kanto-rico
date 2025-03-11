@@ -1,10 +1,15 @@
-const router = require('express').Router();
-const createService = require('../services/service.factory.service').createService;
-const getAllServices = require('../services/service.factory.service').getAllServices;
-const updateService = require('../services/service.factory.service').updateService;
-const deleteService = require('../services/service.factory.service').deleteService;
+const passport = require('passport');
+const Roles = require('../config/roles');
 
-router.post('/create/service', async (req, res, next) => {
+const router = require('express').Router();
+const createService = require('../services/services.service').createService;
+const getAllServices = require('../services/services.service').getAllServices;
+const updateService = require('../services/services.service').updateService;
+const deleteService = require('../services/services.service').deleteService;
+
+router.post('/',passport.authenticate('jwt', {session: false}),
+passport.authorize([Roles.MANAGER]),
+async (req, res, next) => {
     try {
         const newService = await createService({
             name: req.body.name
@@ -16,7 +21,9 @@ router.post('/create/service', async (req, res, next) => {
     }
 });
 
-router.get('/get/service', async (req, res, next) => {
+router.get('/',passport.authenticate('jwt', {session: false}),
+passport.authorize([Roles.MANAGER]), 
+async (req, res, next) => {
     try {
         const services = await getAllServices();
         res.json(services);
@@ -25,7 +32,9 @@ router.get('/get/service', async (req, res, next) => {
     }
 });
 
-router.put('/put/service/:id', async (req, res, next) => {
+router.put('/:id',passport.authenticate('jwt', {session: false}),
+passport.authorize([Roles.MANAGER]),
+async (req, res, next) => {
     try {
         const updatedService = await updateService(req.params.id, req.body.name);
         await updatedService.save();
@@ -35,7 +44,9 @@ router.put('/put/service/:id', async (req, res, next) => {
     }
 });
 
-router.delete('/delete/service/:id', async (req, res, next) => {
+router.delete('/:id',passport.authenticate('jwt', {session: false}),
+passport.authorize([Roles.MANAGER]),
+async (req, res, next) => {
     try {
         const deletedService = await deleteService(req.params.id);
         await deletedService.remove();
