@@ -4,7 +4,7 @@ const getAllPrestations = require('../services/prestation.factory.service').getA
 const updatePrestation = require('../services/prestation.factory.service').updatePrestation;
 const deletePrestation = require('../services/prestation.factory.service').deletePrestation;
 
-router.post('/createPrestation', async (req, res, next) => {
+router.post('/create/prestation', async (req, res, next) => {
     try {
         const newPrestation = await createPrestation({
             name: req.body.name,
@@ -17,7 +17,7 @@ router.post('/createPrestation', async (req, res, next) => {
     }
 });
 
-router.get('/getAllPrestations', async (req, res, next) => {
+router.get('/get/prestation', async (req, res, next) => {
     try {
         const prestations = await getAllPrestations();
         res.json(prestations);
@@ -26,9 +26,9 @@ router.get('/getAllPrestations', async (req, res, next) => {
     }
 });
 
-router.put('/updatePrestation', async (req, res, next) => {
+router.put('/put/prestation/:id', async (req, res, next) => {
     try {
-        const updatedPrestation = await updatePrestation(req.body.id, req.body.name, req.body.price);
+        const updatedPrestation = await updatePrestation(req.params.id, req.body.name, req.body.price);
         await updatedPrestation.save();
         res.json({ message: 'Prestation updated' });
     } catch (error) {
@@ -36,9 +36,9 @@ router.put('/updatePrestation', async (req, res, next) => {
     }
 });
 
-router.delete('/deletePrestation', async (req, res, next) => {
+router.delete('/delete/prestation/:id', async (req, res, next) => {
     try {
-        const deletedPrestation = await deletePrestation(req.body.id);
+        const deletedPrestation = await deletePrestation(req.params.id);
         await deletedPrestation.remove();
         res.json({ message: 'Prestation deleted' });
     } catch (error) {
