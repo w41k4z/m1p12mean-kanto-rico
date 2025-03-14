@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { FormContainerComponent } from 'src/app/core/components/form.container.component';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
@@ -17,7 +18,8 @@ export class LoginComponent extends FormContainerComponent {
 
     constructor(
         public layoutService: LayoutService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
         super(
             new FormGroup({
@@ -36,8 +38,12 @@ export class LoginComponent extends FormContainerComponent {
             .authenticate(formData.email, formData.password)
             .subscribe({
                 next: (res) => {
-                    console.log('Login response:', res);
-                    this.resetForm();
+                    const accessToken = res.payload?.accessToken;
+                    if (accessToken) {
+                        this.authService.saveSession(accessToken);
+                        this.resetForm();
+                        this.authService.redirectToHomePage(this.router);
+                    }
                 },
                 error: (err: HttpErrorResponse) => {
                     console.error('Login error:', err);
