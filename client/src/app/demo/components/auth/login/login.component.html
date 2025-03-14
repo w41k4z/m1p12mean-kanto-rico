@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="w-full md:w-10 mx-auto">
-                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <form [formGroup]="componentForm" (ngSubmit)="submit()">
 
                         <div class="form-group" [ngClass]="{'invalid': isFieldInvalid('email')}">
                             <label for="email" class="block text-900 text-xl font-medium mb-2">Email</label>
@@ -24,7 +24,12 @@
                                 style="padding:1rem;"
                             />
                             <div class="error-message" *ngIf="isFieldInvalid('email')">
-                                {{ getErrorMessage('email') }}
+                                <p *ngIf="f['email']?.errors?.['required']">
+                                    Email is required
+                                </p>
+                                <p *ngIf="f['email']?.errors?.['email']">
+                                    Please enter a valid email address
+                                </p>
                             </div>
                         </div>
     
@@ -34,17 +39,25 @@
                                 formControlName="password"
                                 id="password"
                                 placeholder="Password"
+                                [feedback]="false"
                                 [toggleMask]="true"
                                 styleClass="p-password p-component p-inputwrapper p-input-icon-right mb-3"
                                 [style]="{'width':'100%'}"
                                 [inputStyle]="{'width':'100%'}">
                             </p-password>
                             <div class="error-message" *ngIf="isFieldInvalid('password')">
-                                {{ getErrorMessage('password') }}
+                                <p *ngIf="f['password']?.errors?.['required']">
+                                    Password is required
+                                </p>
                             </div>
                         </div>
     
-                        <button pButton type="submit" [disabled]="!loginForm.valid" pRipple label="Sign In" class="w-full p-3 mt-5 text-xl"></button>
+                        <div *ngIf="error$ | async as error" class="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded"
+                            role="alert">
+                            {{ error }}
+                        </div>
+
+                        <button pButton type="submit" [disabled]="!componentForm.valid" pRipple label="Sign In" class="w-full p-3 mt-5 text-xl"></button>
                     </form>
                 </div>
             </div>
