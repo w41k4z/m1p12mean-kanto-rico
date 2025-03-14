@@ -5,11 +5,18 @@ import { AppLayoutComponent } from './layout/app.layout.component';
 import { MydashboardComponent } from './demo/components/mydashboard/mydashboard.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { Privileges } from './core/config/privileges';
+import { RedirectionGuard } from './core/guards/redirection.guard';
+import { EmptyComponent } from './layout/empty/empty.component';
 
 @NgModule({
     imports: [
         RouterModule.forRoot(
             [
+                {
+                    path: '',
+                    component: EmptyComponent,
+                    canActivate: [RedirectionGuard],
+                },
                 {
                     path: 'client',
                     loadChildren: () =>
@@ -38,7 +45,7 @@ import { Privileges } from './core/config/privileges';
                     data: { roles: [Privileges.MANAGER] },
                 },
                 {
-                    path: '',
+                    path: 'template',
                     component: AppLayoutComponent,
                     children: [
                         {

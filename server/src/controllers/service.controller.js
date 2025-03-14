@@ -1,59 +1,75 @@
-const passport = require('passport');
-const Roles = require('../config/roles');
+const passport = require("passport");
+const Roles = require("../config/roles");
+const router = require("express").Router();
+const ApiResponse = require("../config/response/api.response");
+const serviceService = require("../services/services.service");
 
-const router = require('express').Router();
-const createService = require('../services/services.service').createService;
-const getAllServices = require('../services/services.service').getAllServices;
-const updateService = require('../services/services.service').updateService;
-const deleteService = require('../services/services.service').deleteService;
-
-router.post('/',passport.authenticate('jwt', {session: false}),
-passport.authorize([Roles.MANAGER]),
-async (req, res, next) => {
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  passport.authorize([Roles.MANAGER]),
+  async (req, res, next) => {
     try {
-        const newService = await createService({
-            name: req.body.name
-        });
-        await newService.save();
-        res.json({ message: 'Service created' });
+      const newService = await serviceService.createService({
+        name: req.body.name,
+      });
+      await newService.save();
+      const message = "Service created";
+      res.json(new ApiResponse(null, message));
     } catch (error) {
-        next(error);
+      next(error);
     }
-});
+  }
+);
 
-router.get('/',passport.authenticate('jwt', {session: false}),
-passport.authorize([Roles.MANAGER]), 
-async (req, res, next) => {
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  passport.authorize([Roles.MANAGER]),
+  async (req, res, next) => {
     try {
-        const services = await getAllServices();
-        res.json(services);
+      const services = await serviceService.getAllServices();
+      const payload = { services };
+      res.json(new ApiResponse(payload));
     } catch (error) {
-        next(error);
+      next(error);
     }
-});
+  }
+);
 
-router.put('/:id',passport.authenticate('jwt', {session: false}),
-passport.authorize([Roles.MANAGER]),
-async (req, res, next) => {
+router.put(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  passport.authorize([Roles.MANAGER]),
+  async (req, res, next) => {
     try {
-        const updatedService = await updateService(req.params.id, req.body.name);
-        await updatedService.save();
-        res.json({ message: 'Service updated' });
+      const updatedService = await serviceService.updateService(
+        req.params.id,
+        req.body.name
+      );
+      await updatedService.save();
+      const message = "Service updated";
+      res.json(new ApiResponse(null, message));
     } catch (error) {
-        next(error);
+      next(error);
     }
-});
+  }
+);
 
-router.delete('/:id',passport.authenticate('jwt', {session: false}),
-passport.authorize([Roles.MANAGER]),
-async (req, res, next) => {
+router.delete(
+  "/:id",
+  passport.authenticate("jwt", { session: false }),
+  passport.authorize([Roles.MANAGER]),
+  async (req, res, next) => {
     try {
-        const deletedService = await deleteService(req.params.id);
-        await deletedService.remove();
-        res.json({ message: 'Service deleted' });
+      const deletedService = await serviceService.deleteService(req.params.id);
+      await deletedService.remove();
+      const message = "Service deleted";
+      res.json(new ApiResponse(null, message));
     } catch (error) {
-        next(error);
+      next(error);
     }
-});
+  }
+);
 
 module.exports = router;

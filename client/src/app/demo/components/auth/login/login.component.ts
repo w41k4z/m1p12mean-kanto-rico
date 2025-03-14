@@ -1,5 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { FormContainerComponent } from 'src/app/core/components/form.container.component';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
@@ -8,56 +12,59 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
-    loginForm: FormGroup;
-
-    valCheck: string[] = ['remember'];
-
-    password!: string;
+export class LoginComponent extends FormContainerComponent {
+    protected errorSubject = new BehaviorSubject<string | null>(null);
+    public error$ = this.errorSubject.asObservable();
 
     constructor(
         public layoutService: LayoutService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {
-        this.loginForm = new FormGroup({
-            email: new FormControl('', [Validators.required, Validators.email]),
-            password: new FormControl('', [
-                Validators.required,
-                Validators.minLength(6),
-            ]),
-        });
-    }
-
-    onSubmit(): void {
-        if (this.loginForm.valid) {
-            const formData = this.loginForm.value;
-            console.log('Login data:', formData);
-            // Here you would typically call your authentication service
-        }
-    }
-
-    isFieldInvalid(field: string): boolean {
-        const control = this.loginForm.get(field);
-        return (
-            !!control && control.invalid && (control.dirty || control.touched)
+        super(
+            new FormGroup({
+                email: new FormControl('', [
+                    Validators.required,
+                    Validators.email,
+                ]),
+                password: new FormControl('', [Validators.required]),
+            })
         );
     }
 
-    getErrorMessage(field: string): string {
-        const control = this.loginForm.get(field);
-
-        if (control?.hasError('required')) {
-            return 'This field is required';
-        }
-
-        if (control?.hasError('email')) {
-            return 'Please enter a valid email address';
-        }
-
-        if (control?.hasError('minlength')) {
-            return `Password must be at least ${control.errors?.['minlength'].requiredLength} characters`;
-        }
-
-        return '';
+    override onSubmit(): void {
+        const formData = this.componentForm.value;
+        this.authService
+            .authenticate(formData.email, formData.password)
+            .subscribe({
+                next: (res) => {
+                    const accessToken = res.payload?.accessToken;
+                    if (accessToken) {
+                        this.authService.saveSession(accessToken);
+                        this.resetForm();
+                        this.authService.redirectToHomePage(this.router);
+                    }
+                },
+                error: (err: HttpErrorResponse) => {
+                    console.error('Login error:', err);
+                    switch (err.status) {
+                        case 401:
+                            this.errorSubject.next('Invalid credentials');
+                            break;
+                        case 500:
+                            this.errorSubject.next(
+                                'An error occurred on the server'
+                            );
+                            break;
+                        default:
+                            this.errorSubject.next(err.message);
+                            break;
+                    }
+                    // wait 5 seconds before clearing the error message
+                    setTimeout(() => {
+                        this.errorSubject.next(null);
+                    }, 5000);
+                },
+            });
     }
 }
