@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { Message } from 'primeng/api';
 import { FormContainerComponent } from 'src/app/core/components/form.container.component';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -13,8 +13,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent extends FormContainerComponent {
-    protected errorSubject = new BehaviorSubject<string | null>(null);
-    public error$ = this.errorSubject.asObservable();
+    public errorMessages: Message[] = [];
 
     constructor(
         public layoutService: LayoutService,
@@ -46,24 +45,30 @@ export class LoginComponent extends FormContainerComponent {
                     }
                 },
                 error: (err: HttpErrorResponse) => {
-                    console.error('Login error:', err);
+                    this.errorMessages = [];
                     switch (err.status) {
                         case 401:
-                            this.errorSubject.next('Invalid credentials');
+                            this.errorMessages.push({
+                                severity: 'error',
+                                summary: 'Authentication error',
+                                detail: 'Invalid credentials',
+                            });
                             break;
                         case 500:
-                            this.errorSubject.next(
-                                'An error occurred on the server'
-                            );
+                            this.errorMessages.push({
+                                severity: 'error',
+                                summary: 'Server error',
+                                detail: 'Uknown internal server error',
+                            });
                             break;
                         default:
-                            this.errorSubject.next(err.message);
+                            this.errorMessages.push({
+                                severity: 'error',
+                                summary: '',
+                                detail: err.message,
+                            });
                             break;
                     }
-                    // wait 5 seconds before clearing the error message
-                    setTimeout(() => {
-                        this.errorSubject.next(null);
-                    }, 5000);
                 },
             });
     }

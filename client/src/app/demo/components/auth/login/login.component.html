@@ -52,10 +52,7 @@
                             </div>
                         </div>
     
-                        <div *ngIf="error$ | async as error" class="p-3 text-sm text-red-800 bg-red-100 border border-red-200 rounded"
-                            role="alert">
-                            {{ error }}
-                        </div>
+                        <p-messages [value]="errorMessages"></p-messages>
 
                         <button pButton type="submit" [disabled]="!componentForm.valid" pRipple label="Sign In" class="w-full p-3 mt-5 text-xl"></button>
                     </form>
