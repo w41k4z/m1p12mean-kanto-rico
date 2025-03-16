@@ -15,12 +15,16 @@ export class UserListComponent implements OnInit {
     constructor(private userService: UserService) {}
 
     ngOnInit(): void {
-        this.userService.getUsers().subscribe((res) => {
-            if (res.payload) {
-                this.users = res.payload.users;
+        this.userService.getUsers().subscribe({
+            next: (res) => {
+                if (res.payload) {
+                    this.users = res.payload.users;
+                    this.totalRecords = this.users.length;
+                }
+            },
+            complete: () => {
                 this.loadingUsers = false;
-                this.totalRecords = this.users.length;
-            }
+            },
         });
     }
 }
