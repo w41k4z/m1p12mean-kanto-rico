@@ -20,7 +20,12 @@ server.use(
     authorize([Roles.MANAGER]),
     require('../controllers/account.controller')
 );
-
+server.use(
+    '/api/users',
+    passport.authenticate("jwt", { session: false }),
+    authorize([Roles.MANAGER]),
+    require('../controllers/user.controller')
+);
 server.use('api/prestations', require('../controllers/prestation.controller'));
 server.use('api/services', require('../controllers/service.controller'));
 
