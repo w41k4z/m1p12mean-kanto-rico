@@ -11,10 +11,20 @@ import { env } from 'src/environments/environment';
 export class UserService {
     constructor(private httpClient: HttpClient) {}
 
-    getUsers(page: number, size: number) {
-        const params = new HttpParams()
+    getUsers(page: number, size: number, filters: any) {
+        let params = new HttpParams()
             .set('page', page.toString())
             .set('size', size.toString());
+        if (filters) {
+            Object.keys(filters).forEach((key) => {
+                if (filters[key][0].value) {
+                    params = params.set(
+                        `filters[${key}]`,
+                        JSON.stringify(filters[key][0])
+                    );
+                }
+            });
+        }
         return this.httpClient.get<ApiResponse<UserListPayload>>(
             `${env.baseUrl}/${Endpoints.USERS}`,
             { params }

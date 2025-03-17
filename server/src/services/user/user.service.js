@@ -1,5 +1,5 @@
 const User = require('../../models/User');
 
-exports.getAllUsers = (page, size) => {
-    return User.find().populate('role').skip(page).limit(size);
+exports.getAllUsers = (page, size, filters) => {
+    return User.find(filters).populate('role').skip(page).limit(size);
 };

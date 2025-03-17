@@ -9,13 +9,24 @@
         [totalRecords]="totalRecords"
         [lazy]="true"
         (onPage)="onPageChange($event)"
+        (onFilter)="onFilterChange($event)"
         responsiveLayout="scroll"
     >
     
         <ng-template pTemplate="header">
             <tr>
-                <th>Nom </th>
-                <th>Prénom </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Nom
+                        <p-columnFilter type="text" field="lastName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="lastNameFilterOptions" placeholder="Recherche par nom"></p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Prénom
+                        <p-columnFilter type="text" field="firstName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="firstNameFilterOptions" placeholder="Recherche par prénom"></p-columnFilter>
+                    </div>
+                </th>
                 <th>Identifiant</th>
                 <th>Type</th>
             </tr>

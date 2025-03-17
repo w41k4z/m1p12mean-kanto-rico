@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FilterMatchMode } from 'primeng/api';
 import { User } from 'src/app/core/dto/user';
 import { UserService } from 'src/app/core/services/api/user/user.service';
 
@@ -11,7 +12,16 @@ export class UserListComponent implements OnInit {
     users: User[] = [];
     loadingUsers: boolean = true;
     totalRecords: number = 0;
-    pageSize: number = 1;
+    pageSize: number = 10;
+    filters: any = {};
+    lastNameFilterOptions = [
+        { label: 'Contient', value: FilterMatchMode.CONTAINS },
+        { label: 'Commence par', value: FilterMatchMode.STARTS_WITH },
+    ];
+    firstNameFilterOptions = [
+        { label: 'Contient', value: FilterMatchMode.CONTAINS },
+        { label: 'Commence par', value: FilterMatchMode.STARTS_WITH },
+    ];
 
     constructor(private userService: UserService) {}
 
@@ -19,8 +29,8 @@ export class UserListComponent implements OnInit {
         this.loadUsers(0, this.pageSize);
     }
 
-    private loadUsers(page: number, size: number) {
-        this.userService.getUsers(page, size).subscribe({
+    private loadUsers(page: number, size: number, filters?: any) {
+        this.userService.getUsers(page, size, filters).subscribe({
             next: (res) => {
                 if (res.payload) {
                     this.users = res.payload.users.content;
@@ -34,6 +44,11 @@ export class UserListComponent implements OnInit {
     }
 
     onPageChange(event: { first: number; rows: number }) {
-        this.loadUsers(event.first, event.rows);
+        this.loadUsers(event.first, event.rows, this.filters);
+    }
+
+    onFilterChange(event: any) {
+        this.filters = event.filters;
+        this.loadUsers(0, this.pageSize, this.filters);
     }
 }
