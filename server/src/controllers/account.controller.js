@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Roles = require("../config/roles");
-const userFactoryService = require("../services/user.factory.service");
+const userFactoryService = require("../services/user/user.factory.service");
 
 router.post("/create/client", async (req, res, next) => {
   try {

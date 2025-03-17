@@ -20,7 +20,12 @@ server.use(
     authorize([Roles.MANAGER]),
     require('../controllers/account.controller')
 );
-
+server.use(
+    '/api/users',
+    passport.authenticate("jwt", { session: false }),
+    authorize([Roles.MANAGER]),
+    require('../controllers/user.controller')
+);
 server.use('api/prestations', require('../controllers/prestation.controller'));
 server.use('api/services', require('../controllers/service.controller'));
 
@@ -29,6 +34,7 @@ server.use((req, res, next) => {
     next(createHttpError(404, "Resource not found"));
 });
 server.use((err, req, res, next) => {
+    console.log(err);
     let errorMessage = err instanceof Error ? err.message : "An unknown error has occurred";
     let statusCode = err.status || 500;
     return res.status(statusCode).json({ message: errorMessage });

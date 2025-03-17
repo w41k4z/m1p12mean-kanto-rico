@@ -1,0 +1,50 @@
+<div class="card">
+    <h5>Liste des utilisateurs</h5>
+    <p-table #dt 
+        [value]="users"
+        [loading]="loadingUsers"
+        [paginator]="true"
+        [rows]="pageSize"
+        [rowHover]="true"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onPage)="onPageChange($event)"
+        (onFilter)="onFilterChange($event)"
+        responsiveLayout="scroll"
+    >
+    
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Nom
+                        <p-columnFilter type="text" field="lastName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="lastNameFilterOptions" placeholder="Recherche par nom"></p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Prénom
+                        <p-columnFilter type="text" field="firstName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="firstNameFilterOptions" placeholder="Recherche par prénom"></p-columnFilter>
+                    </div>
+                </th>
+                <th>Identifiant</th>
+                <th>Type</th>
+            </tr>
+        </ng-template>
+    
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.role.name }}</td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4" class="text-center">No users found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

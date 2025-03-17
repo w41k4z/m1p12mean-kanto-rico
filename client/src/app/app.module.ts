@@ -29,6 +29,7 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { PrimeNGConfig } from 'primeng/api';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent, MydashboardComponent],
@@ -56,6 +57,17 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
             multi: true,
         },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        {
+            provide: PrimeNGConfig,
+            useFactory: () => {
+                const config = new PrimeNGConfig();
+                config.setTranslation({
+                    apply: 'Appliquer',
+                    clear: 'Effacer',
+                });
+                return config;
+            },
+        },
         CountryService,
         CustomerService,
         EventService,
