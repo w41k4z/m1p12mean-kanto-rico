@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Endpoints } from 'src/app/core/config/endpoints';
 import { ApiResponse } from 'src/app/core/dto/response/api.response';
@@ -11,9 +11,13 @@ import { env } from 'src/environments/environment';
 export class UserService {
     constructor(private httpClient: HttpClient) {}
 
-    getUsers() {
+    getUsers(page: number, size: number) {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
         return this.httpClient.get<ApiResponse<UserListPayload>>(
-            `${env.baseUrl}/${Endpoints.USERS}`
+            `${env.baseUrl}/${Endpoints.USERS}`,
+            { params }
         );
     }
 }

@@ -34,6 +34,7 @@ server.use((req, res, next) => {
     next(createHttpError(404, "Resource not found"));
 });
 server.use((err, req, res, next) => {
+    console.log(err);
     let errorMessage = err instanceof Error ? err.message : "An unknown error has occurred";
     let statusCode = err.status || 500;
     return res.status(statusCode).json({ message: errorMessage });
