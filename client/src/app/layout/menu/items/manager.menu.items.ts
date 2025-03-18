@@ -17,6 +17,11 @@ export default [
                 icon: 'pi pi-fw pi-users',
                 routerLink: ['/manager/users'],
             },
+            {
+                label: 'Services',
+                icon: 'pi pi-shield',
+                routerLink: ['/manager/services'],
+            },
         ],
     },
 ];

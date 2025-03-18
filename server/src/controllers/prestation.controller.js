@@ -3,11 +3,13 @@ const passport = require("../config/auth/passport");
 const Roles = require("../config/roles");
 const ApiResponse = require("../config/response/api.response");
 const prestationService = require("../services/prestation.service");
+const authorize = require("../middlewares/authorization.middleware");
+
 
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const newPrestation = await prestationService.createPrestation({

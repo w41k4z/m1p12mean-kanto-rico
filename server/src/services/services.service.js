@@ -1,12 +1,13 @@
 const Service = require('../models/Service');
 
-exports.createService = async (name) => {
+exports.createService = async (nameParam) => {
+    const {name} = nameParam;
     let  newService = new Service({name});
     return newService;
 };
 
-exports.getAllServices = async () => {
-    let services = await Service.find();
+exports.getAllServices = async (page, size, filters) => {
+    let services = await Service.find(filters).skip(page).limit(size);
     return services;
 }
 
