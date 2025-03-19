@@ -10,6 +10,12 @@ import { UserService } from 'src/app/core/services/api/user/user.service';
 })
 export class UserListComponent implements OnInit {
     users: User[] = [];
+    cols: any[] = [
+        { field: 'lastName', header: 'Nom' },
+        { field: 'firstName', header: 'Prénom' },
+        { field: 'username', header: 'Identifiant' },
+        { field: 'role.name', header: 'Type' },
+    ];
     loadingUsers: boolean = true;
     totalRecords: number = 0;
     pageSize: number = 10;
