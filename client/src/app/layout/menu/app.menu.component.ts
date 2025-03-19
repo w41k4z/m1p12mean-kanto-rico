@@ -21,21 +21,21 @@ export class AppMenuComponent implements OnInit {
     async loadMenuItems() {
         const role = this.authService.getRole();
         switch (role) {
-            // case Privileges.MANAGER:
-            //     this.model = (
-            //         await import('./items/manager.menu.items')
-            //     ).default;
-            //     break;
-            // case Privileges.MECHANIC:
-            //     this.model = (
-            //         await import('./items/mechanic.menu.items')
-            //     ).default;
-            //     break;
-            // case Privileges.CLIENT:
-            //     this.model = (
-            //         await import('./items/client.menu.items')
-            //     ).default;
-            //     break;
+            case Privileges.MANAGER:
+                this.model = (
+                    await import('./items/manager.menu.items')
+                ).default;
+                break;
+            case Privileges.MECHANIC:
+                this.model = (
+                    await import('./items/mechanic.menu.items')
+                ).default;
+                break;
+            case Privileges.CLIENT:
+                this.model = (
+                    await import('./items/client.menu.items')
+                ).default;
+                break;
             default:
                 this.model = templateMenuItems;
                 break;
