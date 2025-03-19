@@ -1,7 +1,24 @@
 <div class="card">
-    <h5>Liste des utilisateurs</h5>
-    <p-table #dt 
+    <p-toolbar>
+        <ng-template pTemplate="left">
+            <h5>Liste des utilisateurs</h5>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button
+                pButton
+                pRipple
+                label="Exporter (csv)"
+                icon="pi pi-download"
+                class="p-button-help"
+                (click)="dt.exportCSV()"
+            ></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table
+        #dt
         [value]="users"
+        [columns]="cols"
         [loading]="loadingUsers"
         [paginator]="true"
         [rows]="pageSize"
@@ -12,26 +29,45 @@
         (onFilter)="onFilterChange($event)"
         responsiveLayout="scroll"
     >
-    
         <ng-template pTemplate="header">
             <tr>
                 <th>
-                    <div class="flex justify-content-between align-items-center">
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
                         Nom
-                        <p-columnFilter type="text" field="lastName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="lastNameFilterOptions" placeholder="Recherche par nom"></p-columnFilter>
+                        <p-columnFilter
+                            type="text"
+                            field="lastName"
+                            display="menu"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            [matchModeOptions]="lastNameFilterOptions"
+                            placeholder="Recherche par nom"
+                        ></p-columnFilter>
                     </div>
                 </th>
                 <th>
-                    <div class="flex justify-content-between align-items-center">
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
                         Prénom
-                        <p-columnFilter type="text" field="firstName" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="firstNameFilterOptions" placeholder="Recherche par prénom"></p-columnFilter>
+                        <p-columnFilter
+                            type="text"
+                            field="firstName"
+                            display="menu"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            [matchModeOptions]="firstNameFilterOptions"
+                            placeholder="Recherche par prénom"
+                        ></p-columnFilter>
                     </div>
                 </th>
                 <th>Identifiant</th>
                 <th>Type</th>
             </tr>
         </ng-template>
-    
+
         <ng-template pTemplate="body" let-user>
             <tr>
                 <td>{{ user.lastName }}</td>
@@ -48,3 +84,30 @@
         </ng-template>
     </p-table>
 </div>
+<!-- <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Détails de l'utilisateur" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="field">
+            <label for="lastName">Nom</label>
+            <input type="text" pInputText id="lastName" [(ngModel)]="userObject.lastName" required autofocus
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.lastName}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.lastName">Le nom est requis.</small>
+        </div>
+        <div class="field">
+            <label for="firstName">Prénom</label>
+            <input type="text" pInputText id="firstName" [(ngModel)]="userObject.firstName" required [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.lastName}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.firstName">Le prénom est requis.</small>
+        </div>
+        <div class="field">
+            <label for="username">Identifiant</label>
+            <input type="text" pInputText id="username" [(ngModel)]="userObject.username" required
+                [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.username}" />
+            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.username">L'identifiant est requis.</small>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+    </ng-template>
+</p-dialog> -->

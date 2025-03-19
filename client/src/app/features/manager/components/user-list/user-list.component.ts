@@ -10,6 +10,12 @@ import { UserService } from 'src/app/core/services/api/user/user.service';
 })
 export class UserListComponent implements OnInit {
     users: User[] = [];
+    cols: any[] = [
+        { field: 'lastName', header: 'Nom' },
+        { field: 'firstName', header: 'Prénom' },
+        { field: 'username', header: 'Identifiant' },
+        { field: 'role.name', header: 'Type' },
+    ];
     loadingUsers: boolean = true;
     totalRecords: number = 0;
     pageSize: number = 10;
@@ -22,6 +28,10 @@ export class UserListComponent implements OnInit {
         { label: 'Contient', value: FilterMatchMode.CONTAINS },
         { label: 'Commence par', value: FilterMatchMode.STARTS_WITH },
     ];
+
+    // userObject: Partial<User> = {};
+    // userDialog: boolean = false;
+    // submitted: boolean = false;
 
     constructor(private userService: UserService) {}
 
@@ -51,4 +61,22 @@ export class UserListComponent implements OnInit {
         this.filters = event.filters;
         this.loadUsers(0, this.pageSize, this.filters);
     }
+
+    // openUserDialog() {
+    //     this.userObject = {};
+    //     this.submitted = false;
+    //     this.userDialog = true;
+    // }
+
+    // hideDialog() {
+    //     this.userDialog = false;
+    //     this.submitted = false;
+    // }
+
+    // saveUser() {
+    //     this.submitted = true;
+    //     // logic here
+    //     this.userDialog = false;
+    //     this.userObject = {};
+    // }
 }
