@@ -29,10 +29,6 @@ export class UserListComponent implements OnInit {
         { label: 'Commence par', value: FilterMatchMode.STARTS_WITH },
     ];
 
-    // userObject: Partial<User> = {};
-    // userDialog: boolean = false;
-    // submitted: boolean = false;
-
     constructor(private userService: UserService) {}
 
     ngOnInit(): void {
@@ -61,22 +57,4 @@ export class UserListComponent implements OnInit {
         this.filters = event.filters;
         this.loadUsers(0, this.pageSize, this.filters);
     }
-
-    // openUserDialog() {
-    //     this.userObject = {};
-    //     this.submitted = false;
-    //     this.userDialog = true;
-    // }
-
-    // hideDialog() {
-    //     this.userDialog = false;
-    //     this.submitted = false;
-    // }
-
-    // saveUser() {
-    //     this.submitted = true;
-    //     // logic here
-    //     this.userDialog = false;
-    //     this.userObject = {};
-    // }
 }
