@@ -28,6 +28,11 @@ server.use(
 );
 server.use('api/prestations', require('../controllers/prestation.controller'));
 server.use('api/services', require('../controllers/service.controller'));
+server.use(
+    '/api/tokens',
+    passport.authenticate("jwt", { session: false }),
+    require('../controllers/token.transaction.controller')
+);
 
 // Error handling
 server.use((req, res, next) => {
