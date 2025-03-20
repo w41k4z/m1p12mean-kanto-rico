@@ -36,8 +36,8 @@
             
                 <ng-template pTemplate="body" let-transaction>
                     <tr>
-                        <td>{{ transaction.transactionDate | date: 'EEEE d MMMM y' }}</td>
-                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.transactionDate | date: 'dd/MM/yyyy à HH:mm:ss' }}</td>
+                        <td class="text-right">{{ transaction.amount }}</td>
                         <td>{{ transaction.description }}</td>
                     </tr>
                 </ng-template>
