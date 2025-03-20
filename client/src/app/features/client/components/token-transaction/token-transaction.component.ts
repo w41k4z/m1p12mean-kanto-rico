@@ -53,6 +53,8 @@ export class TokenTransactionComponent implements OnInit {
     }
 
     onFilter() {
-        this.loadTransactions(0, this.pageSize);
+        if (this.fromDate || this.toDate) {
+            this.loadTransactions(0, this.pageSize);
+        }
     }
 }
