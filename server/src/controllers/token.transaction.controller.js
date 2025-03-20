@@ -34,20 +34,23 @@ router.post("/", async (req, res, next) => {
 
 router.get("/transactions", async (req, res, next) => {
   try {
-      const page = parseInt(req.query.page) || 0;
+    const page = parseInt(req.query.page) || 0;
     const size = parseInt(req.query.size) || 10;
     const filter = { user: req.user.id };
     const fromDate = req.query.fromDate;
     const toDate = req.query.toDate;
     if (fromDate && toDate) {
-        filter.transactionDate = { $gte: fromDate, $lte: toDate };
+      filter.transactionDate = { $gte: fromDate, $lte: toDate };
     }
-    console.log(filter);
     const transactions = await tokenTrasanctionService.getTokenTransactions(
-      filter, page, size
+      filter,
+      page,
+      size
     );
     const totalElements = await TokenTransaction.countDocuments(filter);
-    const payload = { transactions: new Pageable(transactions, page, size, totalElements) };
+    const payload = {
+      transactions: new Pageable(transactions, page, size, totalElements),
+    };
     res.json(new ApiResponse(payload));
   } catch (error) {
     next(error);

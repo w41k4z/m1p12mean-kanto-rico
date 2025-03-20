@@ -9,4 +9,14 @@ export default [
             },
         ],
     },
+    {
+        label: 'Jetons',
+        items: [
+            {
+                label: 'Transaction',
+                icon: 'pi pi-fw pi-history',
+                routerLink: ['/client/token-transactions'],
+            },
+        ],
+    },
 ];
