@@ -1,0 +1,43 @@
+<div class="card">
+    <h5>Liste des prestations</h5>
+    <p-table #dt 
+        [value]="prestations"
+        [loading]="loadingPrestations"
+        [paginator]="true"
+        [rows]="pageSize"
+        [rowHover]="true"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onPage)="onPageChange($event)"
+        (onFilter)="onFilterChange($event)"
+        responsiveLayout="scroll"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Nom
+                        <p-columnFilter type="text" field="name" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="nameFilterOptions" placeholder="Recherche par nom"></p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    <div class="flex justify-content-between align-items-center">
+                        Prix
+                        <p-columnFilter type="text" field="price" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="nameFilterOptions" placeholder="Recherche par prix"></p-columnFilter>
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prestation>
+            <tr>
+                <td>{{ prestation.name }}</td>
+                <td>{{ prestation.price }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="1" class="text-center">No prestations found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
