@@ -5,9 +5,9 @@ import { ManagerRoutingModule } from './manager-routing.module';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { TableModule } from 'primeng/table';
 import { ServiceListComponent } from './components/service-list/service-list.component';
-
+import { PrestationListComponent } from './components/prestation-list/prestation-list.component';
 @NgModule({
-    declarations: [HomeComponent, UserListComponent, ServiceListComponent],
+    declarations: [HomeComponent, UserListComponent, ServiceListComponent,PrestationListComponent],
     imports: [CommonModule, ManagerRoutingModule, TableModule],
 })
 export class ManagerModule {}

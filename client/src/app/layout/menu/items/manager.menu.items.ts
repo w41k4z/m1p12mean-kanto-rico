@@ -22,6 +22,11 @@ export default [
                 icon: 'pi pi-shield',
                 routerLink: ['/manager/services'],
             },
+            {
+                label: 'Prestations',
+                icon: 'pi pi-wrench',
+                routerLink: ['/manager/prestations'],
+            },
         ],
     },
 ];

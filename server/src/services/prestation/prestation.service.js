@@ -1,4 +1,4 @@
-const Prestation = require('../models/Prestation');
+const Prestation = require('../../models/Prestation');
 
 exports.createPrestation = async ({name, price}) => {
     let newPrestation = new Prestation({name, price});
