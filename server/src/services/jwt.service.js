@@ -4,6 +4,7 @@ exports.generateToken = (user) => {
     const payload = {
         id: user.id,
         username: user.username,
+        displayName: `${user.lastName} ${user.firstName}`,
         role: user.role.name
     };
 
