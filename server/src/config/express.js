@@ -33,6 +33,9 @@ server.use(
     passport.authenticate("jwt", { session: false }),
     require('../controllers/token.transaction.controller')
 );
+server.use('/api/prestations', require('../controllers/prestation.controller'));
+server.use('/api/services', require('../controllers/service.controller'));
+
 
 // Error handling
 server.use((req, res, next) => {

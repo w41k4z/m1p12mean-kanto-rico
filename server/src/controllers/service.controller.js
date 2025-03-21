@@ -2,12 +2,18 @@ const passport = require("passport");
 const Roles = require("../config/roles");
 const router = require("express").Router();
 const ApiResponse = require("../config/response/api.response");
-const serviceService = require("../services/services.service");
+const serviceService = require("../services/services/services.service");
+const authorize = require("../middlewares/authorization.middleware");
+const Service = require("../models/Service");
+const Pageable = require("../config/response/pageable");
+const filterFactoryService = require("../services/filter.factory.service");
+
+
 
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const newService = await serviceService.createService({
@@ -24,12 +30,18 @@ router.post(
 
 router.get(
   "/",
-  passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-      const services = await serviceService.getAllServices();
-      const payload = { services };
+      const page = parseInt(req.query.page) || 0;
+      const size = parseInt(req.query.size) || 10;
+      let filters = {};
+      if (req.query.filters) {
+          const rawFilters = req.query.filters;
+          filters = filterFactoryService.createFilters(rawFilters);
+      }
+      const services = await serviceService.getAllServices(page, size, filters);
+      const totalElements = await Service.countDocuments(filters);
+      const payload = { services: new Pageable(services, page, size, totalElements) };
       res.json(new ApiResponse(payload));
     } catch (error) {
       next(error);

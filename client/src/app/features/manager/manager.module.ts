@@ -10,6 +10,8 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { ServiceListComponent } from './components/service-list/service-list.component';
+import { PrestationListComponent } from './components/prestation-list/prestation-list.component';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
@@ -17,7 +19,7 @@ import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
-    declarations: [HomeComponent, UserListComponent],
+    declarations: [HomeComponent, UserListComponent, ServiceListComponent,PrestationListComponent],
     imports: [
         CommonModule,
         ManagerRoutingModule,

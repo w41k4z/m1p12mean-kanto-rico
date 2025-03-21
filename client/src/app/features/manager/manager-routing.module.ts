@@ -3,6 +3,8 @@ import { HomeComponent } from './components/home/home.component';
 import { RouterModule } from '@angular/router';
 import { AppLayoutComponent } from 'src/app/layout/app.layout.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { ServiceListComponent } from './components/service-list/service-list.component';
+import { PrestationListComponent } from './components/prestation-list/prestation-list.component';
 
 @NgModule({
     imports: [
@@ -18,6 +20,14 @@ import { UserListComponent } from './components/user-list/user-list.component';
                     {
                         path: 'users',
                         component: UserListComponent,
+                    },
+                    {
+                        path: 'services',
+                        component: ServiceListComponent,
+                    },
+                    {
+                        path: 'prestations',
+                        component: PrestationListComponent,
                     },
                 ],
             },

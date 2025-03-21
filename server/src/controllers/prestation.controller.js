@@ -2,12 +2,17 @@ const router = require("express").Router();
 const passport = require("../config/auth/passport");
 const Roles = require("../config/roles");
 const ApiResponse = require("../config/response/api.response");
-const prestationService = require("../services/prestation.service");
+const prestationService = require("../services/prestation/prestation.service");
+const authorize = require("../middlewares/authorization.middleware");
+const Prestation = require("../models/Prestation");
+const Pageable = require("../config/response/pageable");
+const filterFactoryService = require("../services/filter.factory.service");
+
 
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const newPrestation = await prestationService.createPrestation({
@@ -25,8 +30,16 @@ router.post(
 
 router.get("/", async (req, res, next) => {
   try {
+    const page = parseInt(req.query.page) || 0;
+    const size = parseInt(req.query.size) || 10;
+    let filters = {};
+    if (req.query.filters) {
+      const rawFilters = req.query.filters;
+      filters = filterFactoryService.createFilters(rawFilters);
+    }
     const prestations = await prestationService.getAllPrestations();
-    const payload = { prestations };
+    const totalElements = await Prestation.countDocuments(filters);
+    const payload = { prestations: new Pageable(prestations, page, size, totalElements) };
     res.json(new ApiResponse(payload));
   } catch (error) {
     next(error);
