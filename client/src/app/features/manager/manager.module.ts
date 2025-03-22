@@ -9,11 +9,19 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import { PrestationListComponent } from './components/prestation-list/prestation-list.component';
+
 import { UserListComponent } from './components/user-list/user-list.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
+
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
+
+
 @NgModule({
     declarations: [HomeComponent, UserListComponent, ServiceListComponent,PrestationListComponent,TaskListComponent],
     imports: [

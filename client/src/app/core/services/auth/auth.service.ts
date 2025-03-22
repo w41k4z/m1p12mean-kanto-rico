@@ -16,6 +16,7 @@ import { Privileges } from '../../config/privileges';
 export class AuthService {
     private token: string | null = null;
     private role: string | null = null;
+    private displayName: string | null = null;
 
     constructor(private httpClient: HttpClient) {
         this.loadSession();
@@ -27,6 +28,7 @@ export class AuthService {
             this.token = accessToken;
             const decodedToken: AppJwt = jwtDecode(accessToken);
             this.role = decodedToken.role;
+            this.displayName = decodedToken.displayName;
         }
     }
 
@@ -36,6 +38,10 @@ export class AuthService {
 
     getRole(): string | null {
         return this.role;
+    }
+
+    getDisplayName(): string | null {
+        return this.displayName;
     }
 
     isAuthenticated(): boolean {
@@ -74,5 +80,13 @@ export class AuthService {
                 router.navigate(['/auth/access']);
                 break;
         }
+    }
+
+    logOut(router: Router) {
+        this.token = null;
+        this.role = null;
+        this.displayName = null;
+        localStorage.removeItem('accessToken');
+        router.navigate(['/auth/login']);
     }
 }
