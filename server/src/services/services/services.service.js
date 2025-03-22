@@ -1,4 +1,5 @@
 const Service = require('../../models/Service');
+const ServicePrestation = require('../../models/ServicePrestation');
 
 exports.createService = async (nameParam) => {
     const {name} = nameParam;
@@ -7,7 +8,18 @@ exports.createService = async (nameParam) => {
 };
 
 exports.getAllServices = async (page, size, filters) => {
-    let services = await Service.find(filters).skip(page).limit(size);
+    let services = await Service.find(filters).skip(page).limit(size).lean();
+    return services;
+}
+
+exports.getAllServicesWithPrestations = async (page, size, filters) => {
+    let services = await this.getAllServices(page, size, filters);
+    for (let service of services) {
+        const servicePrestations = await ServicePrestation.find({
+            service: service._id,
+        }).populate("prestation");
+        service.prestations = servicePrestations.map(sp => sp.prestation);
+    }
     return services;
 }
 

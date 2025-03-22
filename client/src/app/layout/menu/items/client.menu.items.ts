@@ -7,6 +7,11 @@ export default [
                 icon: 'pi pi-fw pi-home',
                 routerLink: ['/client/'],
             },
+            {
+                label: 'Services',
+                icon: 'pi pi-fw pi-briefcase',
+                routerLink: ['/client/services'],
+            },
         ],
     },
     {

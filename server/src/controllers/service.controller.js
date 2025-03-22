@@ -49,6 +49,27 @@ router.get(
   }
 );
 
+router.get(
+  "/with-prestations",
+  async (req, res, next) => {
+    try {
+      const page = parseInt(req.query.page) || 0;
+      const size = parseInt(req.query.size) || 10;
+      let filters = {};
+      if (req.query.filters) {
+          const rawFilters = req.query.filters;
+          filters = filterFactoryService.createFilters(rawFilters);
+      }
+      const services = await serviceService.getAllServicesWithPrestations(page, size, filters);
+      const totalElements = await Service.countDocuments(filters);
+      const payload = { services: new Pageable(services, page, size, totalElements) };
+      res.json(new ApiResponse(payload));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
