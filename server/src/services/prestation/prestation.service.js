@@ -8,10 +8,11 @@ exports.createPrestation = async ({name, price}) => {
     return newPrestation;
 }
 
-exports.getAllPrestations = async () => {
-    let prestations = await Prestation.find();
+exports.getAllPrestations = async (page, size, filters) => {
+    let prestations = await Prestation.find(filters).skip(page).limit(size);
     return prestations;
 }
+
 
 exports.updatePrestation = async (id, name, price) => {
     let prestation = await Prestation.findById(id);

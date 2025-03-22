@@ -14,6 +14,8 @@ export class PrestationListComponent implements OnInit {
     totalRecords: number = 0;
     pageSize: number = 10;
     filters: any = {};
+    sortField: string = 'price';
+    sortOrder: number = 1;
     nameFilterOptions = [
         { label: 'Contient', value: FilterMatchMode.CONTAINS },
         { label: 'Commence par', value: FilterMatchMode.STARTS_WITH },
@@ -24,7 +26,8 @@ export class PrestationListComponent implements OnInit {
         this.loadPrestations(0, this.pageSize);
     }
 
-    private loadPrestations(page: number, size: number, filters?: any) {
+    private loadPrestations(page: number, size: number,sortField?: string, sortOrder?: number,filters?: any) {
+        this.loadingPrestations = true;
         this.prestationService.getPrestations(page, size, filters).subscribe({
             next: (res) => {
                 if (res.payload) {
@@ -39,11 +42,17 @@ export class PrestationListComponent implements OnInit {
     }
 
     onPageChange(event: { first: number; rows: number }) {
-        this.loadPrestations(event.first, event.rows, this.filters);
+        this.loadPrestations(event.first, event.rows, this.sortField, this.sortOrder, this.filters);
     }
 
     onFilterChange(event: any) {
         this.filters = event.filters;
-        this.loadPrestations(0, this.pageSize, this.filters);
+        this.loadPrestations(0, this.pageSize,this.sortField, this.sortOrder, this.filters);
     }
+
+    onSortChange(event: any) {
+        this.sortField = event.field; 
+        this.sortOrder = event.order; 
+        this.loadPrestations(0, this.pageSize, this.sortField, this.sortOrder, this.filters);
+      }
 }
