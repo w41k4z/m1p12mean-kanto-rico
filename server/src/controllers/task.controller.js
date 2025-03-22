@@ -9,23 +9,39 @@ const filterFactoryService = require("../services/filter.factory.service");
 const Task = require("../models/Task");
 
 router.post(
-    "/",
-    passport.authenticate("jwt", { session: false }),
-    authorize([Roles.MANAGER]),
-    async (req, res) => {
-        try {
-            const newTask = await taskService.createTask({
-                idClient: req.user.id,
-                dateDebut: req.body.dateDebut,
-                status: req.body.status
-            });
-            await newTask.save();
-            const message = "Task created";
-            res.json(new ApiResponse(null, message));
-        } catch (error) {
-            next(error);
-        }
-});
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  authorize([Roles.MANAGER]),
+  async (req, res, next) => { 
+      const { idClient, prestations, dateDebut } = req.body;
+
+      try {
+          const task = await taskService.createTaskWithPrestations(idClient, prestations, dateDebut);
+          const message = "Task created successfully";
+          res.status(201).json(new ApiResponse(task, message));
+      } catch (error) {
+          next(error); 
+      }
+  }
+);
+// router.post(
+//     "/",
+//     passport.authenticate("jwt", { session: false }),
+//     authorize([Roles.MANAGER]),
+//     async (req, res) => {
+//         try {
+//             const newTask = await taskService.createTask({
+//                 idClient: req.user.id,
+//                 dateDebut: req.body.dateDebut,
+//                 status: req.body.status
+//             });
+//             await newTask.save();
+//             const message = "Task created";
+//             res.json(new ApiResponse(null, message));
+//         } catch (error) {
+//             next(error);
+//         }
+// });
 
 router.get(
     "/",
