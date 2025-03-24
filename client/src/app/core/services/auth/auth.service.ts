@@ -56,12 +56,21 @@ export class AuthService {
         );
     }
 
+    authenticateWithGoogle(googleToken: string) {
+        return this.httpClient.post<ApiResponse<AuthResponse>>(
+            `${env.baseUrl}/${Endpoints.AUTH}/google`,
+            { token: googleToken }
+        );
+    }
+
     saveSession(accessToken: string) {
         localStorage.setItem('accessToken', accessToken);
         this.loadSession(accessToken);
     }
 
     redirectToHomePage(router: Router) {
+        console.log('Checking authentication:', this.isAuthenticated());
+        console.log('Current role:', this.role);
         if (!this.isAuthenticated()) {
             router.navigate(['/auth/login']);
             return;
