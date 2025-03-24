@@ -6,6 +6,7 @@ const User = require("../models/User");
 const Roles = require("../config/roles");
 const Providers = require("../config/providers");
 const jwtService = require("../services/jwt.service");
+const userFactoryService = require("../services/user/user.factory.service");
 
 router.post(
   "/sign-in",
