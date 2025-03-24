@@ -27,6 +27,11 @@ export default [
                 icon: 'pi pi-wrench',
                 routerLink: ['/manager/prestations'],
             },
+            {
+                label: 'Tasks',
+                icon: 'pi pi-wrench',
+                routerLink: ['/manager/tasks'],
+            },
         ],
     },
 ];

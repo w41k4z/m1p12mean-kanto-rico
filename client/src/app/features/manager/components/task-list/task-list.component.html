@@ -1,0 +1,83 @@
+<div class="card">
+    <p-toolbar>
+        <ng-template pTemplate="left">
+            <h5>Liste des tasks</h5>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button
+                pButton
+                pRipple
+                label="Exporter (csv)"
+                icon="pi pi-download"
+                class="p-button-help"
+                (click)="dt.exportCSV()"
+            ></button>
+        </ng-template>
+    </p-toolbar>
+    <p-table
+        #dt
+        [value]="tasks"
+        [loading]="loadingTasks"
+        [paginator]="true"
+        [rows]="pageSize"
+        [rowHover]="true"
+        [totalRecords]="totalRecords"
+        [lazy]="true"
+        (onPage)="onPageChange($event)"
+        (onFilter)="onFilterChange($event)"
+        responsiveLayout="scroll"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
+                        ID
+                        <p-columnFilter
+                            type="text"
+                            field="idtask"
+                            display="menu"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            [matchModeOptions]="idtaskFilterOptions"
+                            placeholder="Recherche par ID"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th>
+                    <div
+                        class="flex justify-content-between align-items-center"
+                    >
+                        Client
+                        <p-columnFilter
+                            type="text"
+                            field="client"
+                            display="menu"
+                            [showOperator]="false"
+                            [showAddButton]="false"
+                            [matchModeOptions]="clientFilterOptions"
+                            placeholder="Recherche par client"
+                        ></p-columnFilter>
+                    </div>
+                </th>
+                <th>Status</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-task>
+            <tr>
+                <td>{{ task.idtask }}</td>
+                <td>{{ task.client }}</td>
+                <td>{{ task.status }}</td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4" class="text-center">No tasks found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

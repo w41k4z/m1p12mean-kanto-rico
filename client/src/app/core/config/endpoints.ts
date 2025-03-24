@@ -7,4 +7,6 @@ export class Endpoints {
 
     public static readonly SERVICES = 'api/services';
     public static readonly PRESTATIONS = 'api/prestations';
+
+    public static readonly TASKS = 'api/tasks';
 }
