@@ -14,3 +14,7 @@ exports.generateToken = (user) => {
 
     return jwt.sign(payload, process.env.JWT_SECRET, options);
 }
+
+exports.decodeToken = (token) => {
+    return jwt.decode(token);
+}
