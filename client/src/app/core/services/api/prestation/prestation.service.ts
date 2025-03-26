@@ -39,4 +39,11 @@ export class PrestationService {
            prestationData
         );
     }
+
+    updatePrestation(id: string, data: { name: string, price: number }) {
+        return this.httpClient.put<ApiResponse<Prestation>>(
+            `${env.baseUrl}/${Endpoints.PRESTATIONS}/${id}`,
+            data
+        );
+    }
 }

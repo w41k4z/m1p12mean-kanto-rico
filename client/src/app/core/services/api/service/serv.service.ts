@@ -10,7 +10,7 @@ import { env } from 'src/environments/environment';
     providedIn: 'root',
 })
 export class ServService {
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient) { }
 
     getServices(page: number, size: number, filters: any) {
         let params = new HttpParams()
@@ -54,7 +54,13 @@ export class ServService {
     createService(name: string) {
         return this.httpClient.post<ApiResponse<any>>(
             `${env.baseUrl}/${Endpoints.SERVICES}`,
-            {name}
+            { name }
+        );
+    }
+    updateService(id: string, data: { name: string}) {
+        return this.httpClient.put<ApiResponse<Service>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}/${id}`,
+            data
         );
     }
 }

@@ -14,6 +14,8 @@ export class PrestationListComponent implements OnInit {
     newPrestation: Prestation = new Prestation('', '', 0);
     loadingPrestations: boolean = true;
     dialogVisible: boolean = false;
+    editDialogVisible: boolean = false;
+    selectedPrestation: Prestation | null = null;
     totalRecords: number = 0;
     pageSize: number = 10;
     filters: any = {};
@@ -110,6 +112,7 @@ export class PrestationListComponent implements OnInit {
             }
         });
     }
+
     validatePrice() {
         if (isNaN(Number(this.newPrestation.price))) {
           this.priceError = 'Price must be a number';
@@ -117,4 +120,35 @@ export class PrestationListComponent implements OnInit {
           this.priceError = null;
         }
     }
+
+    showEditDialog(prestation: Prestation) {
+        this.selectedPrestation = { ...prestation };
+        this.editDialogVisible = true;
+    }
+    updatePrestation() {
+        if (!this.selectedPrestation) return;
+
+        this.prestationService.updatePrestation(this.selectedPrestation._id, {
+            name: this.selectedPrestation.name,
+            price: this.selectedPrestation.price
+        }).subscribe({
+            next: () => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Prestation updated successfully'
+                });
+                this.editDialogVisible = false;
+                this.loadPrestations(0, this.pageSize, this.sortField, this.sortOrder);
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error?.message || 'Failed to update prestation'
+                });
+            }
+        });
+    }
+
 }

@@ -49,7 +49,7 @@ router.get("/", async (req, res, next) => {
 router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const updatedPrestation = await prestationService.updatePrestation(
@@ -69,7 +69,7 @@ router.put(
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const deletedPrestation = await prestationService.deletePrestation(

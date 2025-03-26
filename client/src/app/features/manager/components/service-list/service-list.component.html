@@ -22,12 +22,24 @@
                             placeholder="Recherche par nom"></p-columnFilter>
                     </div>
                 </th>
+                <th style="width: 10%"></th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-service>
             <tr>
                 <td>{{ service.name }}</td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-sm p-button-text"
+                            (click)="showEditDialog(service)"></button>
+
+                        <button pButton pRipple 
+                                icon="pi pi-trash" 
+                                class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                                ></button>
+                    </div>
+                </td>
             </tr>
         </ng-template>
 
@@ -50,6 +62,22 @@
         <ng-template pTemplate="footer">
             <button pButton type="button" label="Annuler" (click)="dialogVisible = false"  class="p-button-danger"></button>
             <p-button label="Valider" icon="pi pi-check" (click)="submitService()" class="p-button-primary"></p-button>
+        </ng-template>
+    </p-dialog>
+    <!-- Edit Dialog -->
+    <p-dialog [(visible)]="editDialogVisible" header="Modifier Service" [modal]="true" [style]="{width: '50vw'}"
+        *ngIf="selectedService" class="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="editServiceName">Nom</label>
+                <input id="editServiceName" pInputText type="text" [(ngModel)]="selectedService.name" required>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Annuler" (click)="editDialogVisible = false"
+                class="p-button-text"></button>
+            <button pButton type="button" label="Enregistrer" (click)="updateService()"
+                class="p-button-primary"></button>
         </ng-template>
     </p-dialog>
 </div>

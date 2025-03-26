@@ -15,6 +15,9 @@ export class ServiceListComponent implements OnInit {
     loadingServices: boolean = true;
     newServiceName: string = '';
     dialogVisible: boolean = false;
+    editDialogVisible: boolean = false;
+    selectedService: Service | null = null;
+    
     totalRecords: number = 0;
     pageSize: number = 10;
     filters: any = {};
@@ -82,6 +85,36 @@ export class ServiceListComponent implements OnInit {
                     severity: 'error',
                     summary: 'Error',
                     detail: err.error?.message || 'Failed to create service',
+                });
+            }
+        });
+    }
+
+    showEditDialog(service : Service) {
+        this.selectedService = service;
+        this.editDialogVisible = true;
+    }
+
+    updateService() {
+        if (!this.selectedService) return;
+
+        this.servService.updateService(this.selectedService._id, {
+            name: this.selectedService.name,
+        }).subscribe({
+            next: () => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Prestation updated successfully'
+                });
+                this.editDialogVisible = false;
+                this.loadServices(0, this.pageSize);
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error?.message || 'Failed to update prestation'
                 });
             }
         });
