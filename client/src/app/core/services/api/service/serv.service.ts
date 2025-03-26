@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Endpoints } from 'src/app/core/config/endpoints';
 import { ApiResponse } from 'src/app/core/dto/response/api.response';
 import { ServiceListPayload } from 'src/app/core/dto/response/service/service.list.payload';
+import { Service } from 'src/app/core/dto/service';
 import { env } from 'src/environments/environment';
 
 @Injectable({
@@ -48,6 +49,12 @@ export class ServService {
         return this.httpClient.get<ApiResponse<ServiceListPayload>>(
             `${env.baseUrl}/${Endpoints.SERVICES}/with-prestations`,
             { params }
+        );
+    }
+    createService(name: string) {
+        return this.httpClient.post<ApiResponse<any>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}`,
+            {name}
         );
     }
 }
