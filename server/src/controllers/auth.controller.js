@@ -25,7 +25,7 @@ router.post("/google", async (req, res, next) => {
     const randomPassword = crypto.randomBytes(8).toString("hex");
     user = await userFactoryService.createUserWithProvider({
       firstName: googleUser.given_name,
-      lastName: googleUser.familyName,
+      lastName: googleUser.family_name,
       username: googleUser.email,
       password: randomPassword,
       roleName: Roles.CLIENT,
