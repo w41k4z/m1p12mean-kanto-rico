@@ -13,7 +13,7 @@ server.use(express.json());
 server.use(passport.initialize());
 
 // Routes
-app.get('/', (req, res) => {
+server.get('/', (req, res) => {
     res.send('Server is running!');
 });
 server.use('/api/auth', require('../controllers/auth.controller'));
