@@ -3,6 +3,7 @@ require('./src/config/dotenv');
 const mongodb = require('./src/config/mongodb');
 const User = require('./src/models/User');
 const Role = require('./src/models/Role');
+const Providers = require('./src/config/providers');
 
 mongodb.connect().then(async () => {
     console.log('Seeding roles..');
@@ -25,7 +26,8 @@ mongodb.connect().then(async () => {
             lastName: 'Rakoto',
             username: 'admin@example.com',
             password: 'admin',
-            role: roleModels.manager._id
+            role: roleModels.manager._id,
+            provider: Providers.LOCAL
         });
     }
     console.log('Manager seeded:', existingManager);

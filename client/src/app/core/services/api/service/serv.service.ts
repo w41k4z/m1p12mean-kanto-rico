@@ -30,4 +30,24 @@ export class ServService {
             { params }
         );
     }
+
+    getServicesWithPrestations(page: number, size: number, filters: any) {
+        let params = new HttpParams()
+            .set('page', page.toString())
+            .set('size', size.toString());
+        if (filters) {
+            Object.keys(filters).forEach((key) => {
+                if (filters[key][0].value) {
+                    params = params.set(
+                        `filters[${key}]`,
+                        JSON.stringify(filters[key][0])
+                    );
+                }
+            });
+        }
+        return this.httpClient.get<ApiResponse<ServiceListPayload>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}/with-prestations`,
+            { params }
+        );
+    }
 }

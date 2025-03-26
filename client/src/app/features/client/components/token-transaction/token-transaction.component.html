@@ -29,16 +29,16 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Date</th>
-                        <th>Montant</th>
                         <th>Description</th>
+                        <th>Montant</th>
                     </tr>
                 </ng-template>
             
                 <ng-template pTemplate="body" let-transaction>
                     <tr>
                         <td>{{ transaction.transactionDate | date: 'dd/MM/yyyy à HH:mm:ss' }}</td>
-                        <td class="text-right">{{ transaction.amount | number:'1.0-2':'fr' }}</td>
                         <td>{{ transaction.description }}</td>
+                        <td class="text-right">{{ transaction.amount | number:'1.0-2':'fr' }}</td>
                     </tr>
                 </ng-template>
 

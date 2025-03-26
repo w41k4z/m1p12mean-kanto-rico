@@ -1,5 +1,7 @@
+declare var google: any;
+
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Message } from 'primeng/api';
@@ -18,7 +20,8 @@ export class LoginComponent extends FormContainerComponent {
     constructor(
         public layoutService: LayoutService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private ngZone: NgZone
     ) {
         super(
             new FormGroup({
@@ -29,6 +32,38 @@ export class LoginComponent extends FormContainerComponent {
                 password: new FormControl('', [Validators.required]),
             })
         );
+    }
+
+    ngOnInit(): void {
+        google.accounts.id.initialize({
+            client_id:
+                '918509446444-81e7pjrliaibe1qf4s7co4js5blreh0p.apps.googleusercontent.com',
+            callback: (res: any) => {
+                this.authService
+                    .authenticateWithGoogle(res.credential)
+                    .subscribe((response) => {
+                        const accessToken = response.payload?.accessToken;
+                        if (accessToken) {
+                            this.ngZone.run(() => {
+                                this.authService.saveSession(accessToken);
+                                this.authService.redirectToHomePage(
+                                    this.router
+                                );
+                            });
+                        }
+                    });
+            },
+        });
+
+        google.accounts.id.renderButton(
+            document.getElementById('google-button'),
+            {
+                size: 'large',
+                shape: 'rectangular',
+            }
+        );
+
+        google.accounts.id.prompt();
     }
 
     override onSubmit(): void {
