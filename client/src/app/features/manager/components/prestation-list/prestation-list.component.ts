@@ -29,17 +29,17 @@ export class PrestationListComponent implements OnInit {
 
     constructor(
         private prestationService: PrestationService,
-        private messageService: MessageService,
-        
-    ) {}
-    priceError: string | null = null; 
+        private messageService: MessageService
+
+    ) { }
+    priceError: string | null = null;
 
 
     ngOnInit(): void {
         this.loadPrestations(0, this.pageSize, this.sortField, this.sortOrder);
     }
 
-    private loadPrestations(page: number, size: number,sortField?: string, sortOrder?: number,filters?: any) {
+    private loadPrestations(page: number, size: number, sortField?: string, sortOrder?: number, filters?: any) {
         this.loadingPrestations = true;
         this.prestationService.getPrestations(page, size, filters).subscribe({
             next: (res) => {
@@ -60,15 +60,15 @@ export class PrestationListComponent implements OnInit {
 
     onFilterChange(event: any) {
         this.filters = event.filters;
-        this.loadPrestations(0, this.pageSize,this.sortField, this.sortOrder, this.filters);
+        this.loadPrestations(0, this.pageSize, this.sortField, this.sortOrder, this.filters);
     }
 
-    onSortChange(event: {field: string, order: number}) {
+    onSortChange(event: { field: string, order: number }) {
         this.sortField = event.field;
         this.sortOrder = event.order;
         this.loadPrestations(0, this.pageSize, this.sortField, this.sortOrder);
     }
-    
+
 
     createNewPrestation() {
         this.newPrestation = new Prestation('', '', 0);
@@ -115,9 +115,9 @@ export class PrestationListComponent implements OnInit {
 
     validatePrice() {
         if (isNaN(Number(this.newPrestation.price))) {
-          this.priceError = 'Price must be a number';
+            this.priceError = 'Price must be a number';
         } else {
-          this.priceError = null;
+            this.priceError = null;
         }
     }
 
@@ -149,6 +149,27 @@ export class PrestationListComponent implements OnInit {
                 });
             }
         });
+    }
+    deletePrestation(prestation: Prestation) {
+        this.prestationService.deletePrestation(prestation._id).subscribe({
+            next: () => {
+                this.prestations = this.prestations.filter(p => p._id !== prestation._id);
+                this.totalRecords--;
+                
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Prestation deleted successfully'
+                });
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error?.message || 'Failed to delete prestation'
+                });
+            }
+        }); 
     }
 
 }

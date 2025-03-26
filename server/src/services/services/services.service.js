@@ -30,6 +30,9 @@ exports.updateService = async (id, name) => {
 };
 
 exports.deleteService = async (id) => {
-    let service = await Service.findById(id);
-    return service;
-}
+    const result = await Service.deleteOne({ _id: id });
+    if (result.deletedCount === 0) {
+        throw new Error('Service not found');
+    }
+    return { id };
+};

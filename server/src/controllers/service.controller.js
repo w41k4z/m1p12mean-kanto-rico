@@ -95,11 +95,12 @@ router.delete(
   authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-      const deletedService = await serviceService.deleteService(req.params.id);
-      await deletedService.remove();
-      const message = "Service deleted";
-      res.json(new ApiResponse(null, message));
+      const result = await serviceService.deleteService(req.params.id);
+      res.json(new ApiResponse(result, "Service deleted successfully"));
     } catch (error) {
+      if (error.message === 'Service not found') {
+        return res.status(404).json(new ApiResponse(null, error.message, false));
+      }
       next(error);
     }
   }

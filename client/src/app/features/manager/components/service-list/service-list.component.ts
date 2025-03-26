@@ -17,7 +17,7 @@ export class ServiceListComponent implements OnInit {
     dialogVisible: boolean = false;
     editDialogVisible: boolean = false;
     selectedService: Service | null = null;
-    
+
     totalRecords: number = 0;
     pageSize: number = 10;
     filters: any = {};
@@ -90,7 +90,7 @@ export class ServiceListComponent implements OnInit {
         });
     }
 
-    showEditDialog(service : Service) {
+    showEditDialog(service: Service) {
         this.selectedService = service;
         this.editDialogVisible = true;
     }
@@ -115,6 +115,27 @@ export class ServiceListComponent implements OnInit {
                     severity: 'error',
                     summary: 'Error',
                     detail: err.error?.message || 'Failed to update prestation'
+                });
+            }
+        });
+    }
+    deleteService(service: Service) {
+        this.servService.deleteService(service._id).subscribe({
+            next: () => {
+                this.services = this.services.filter(s => s._id !== service._id);
+                this.totalRecords--;
+
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Service deleted successfully'
+                });
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error?.message || 'Failed to delete service'
                 });
             }
         });

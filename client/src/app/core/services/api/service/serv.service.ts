@@ -63,4 +63,10 @@ export class ServService {
             data
         );
     }
+
+    deleteService(id: string) {
+        return this.httpClient.delete<ApiResponse<void>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}/${id}`
+        );
+    }
 }

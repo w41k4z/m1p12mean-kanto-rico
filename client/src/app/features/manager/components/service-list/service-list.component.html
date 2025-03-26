@@ -34,10 +34,10 @@
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-sm p-button-text"
                             (click)="showEditDialog(service)"></button>
 
-                        <button pButton pRipple 
-                                icon="pi pi-trash" 
-                                class="p-button-rounded p-button-sm p-button-text p-button-danger"
-                                ></button>
+                            <button pButton pRipple icon="pi pi-trash"
+                            class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                            (click)="deleteService(service)"
+                            pTooltip="Delete" tooltipPosition="top"></button>
                     </div>
                 </td>
             </tr>

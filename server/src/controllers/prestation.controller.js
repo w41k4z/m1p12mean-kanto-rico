@@ -72,16 +72,14 @@ router.delete(
   authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-      const deletedPrestation = await prestationService.deletePrestation(
-        req.params.id
-      );
-      await deletedPrestation.remove();
-      const message = "Prestation deleted";
-      res.json(new ApiResponse(null, message));
+      const result = await prestationService.deletePrestation(req.params.id);
+      res.json(new ApiResponse(result, "Prestation deleted successfully"));
     } catch (error) {
+      if (error.message === 'Prestation not found') {
+        return res.status(404).json(new ApiResponse(null, error.message, false));
+      }
       next(error);
     }
   }
 );
-
 module.exports = router;

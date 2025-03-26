@@ -46,4 +46,10 @@ export class PrestationService {
             data
         );
     }
+    
+    deletePrestation(id: string) {
+        return this.httpClient.delete<ApiResponse<void>>(
+            `${env.baseUrl}/${Endpoints.PRESTATIONS}/${id}`
+        );
+    }
 }
