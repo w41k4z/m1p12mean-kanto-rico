@@ -13,6 +13,9 @@ server.use(express.json());
 server.use(passport.initialize());
 
 // Routes
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+});
 server.use('/api/auth', require('../controllers/auth.controller'));
 server.use(
     '/api/accounts',
