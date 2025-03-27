@@ -64,8 +64,21 @@ export class ServiceListComponent implements OnInit {
         });
     }
 
+    onPageChange(event: {first: number, rows: number}) {
+        this.fetchServices(event.first, event.rows);
+    }
+
     selectService(service: Service) {
         this.selectedService = service;
+        console.log(service);
+        console.log({
+            name: service.name,
+            prestations: service.prestations.map((prestation) => {
+                return {
+                id: prestation._id,
+                name: prestation.name}
+            }),
+        });
     }
 
     openCustomServiceDialog() {
