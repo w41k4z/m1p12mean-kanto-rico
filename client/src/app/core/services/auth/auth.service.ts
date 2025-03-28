@@ -14,6 +14,7 @@ import { Privileges } from '../../config/privileges';
     providedIn: 'root',
 })
 export class AuthService {
+    private userId: string | null = null;
     private token: string | null = null;
     private role: string | null = null;
     private displayName: string | null = null;
@@ -27,9 +28,14 @@ export class AuthService {
         if (accessToken) {
             this.token = accessToken;
             const decodedToken: AppJwt = jwtDecode(accessToken);
+            this.userId = decodedToken.id;
             this.role = decodedToken.role;
             this.displayName = decodedToken.displayName;
         }
+    }
+
+    getUserId(): string | null {
+        return this.userId;
     }
 
     getToken(): string | null {
@@ -45,7 +51,7 @@ export class AuthService {
     }
 
     isAuthenticated(): boolean {
-        return !!this.token && !!this.role;
+        return !!this.userId && !!this.token && !!this.role;
     }
 
     authenticate(username: string, password: string) {

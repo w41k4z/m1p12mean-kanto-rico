@@ -32,7 +32,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "resend": "^4.2.0",
-    "server": "file:"
+    "server": "file:",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
