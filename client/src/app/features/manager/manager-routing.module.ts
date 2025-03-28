@@ -6,6 +6,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { ServiceListComponent } from './components/service-list/service-list.component';
 import { PrestationListComponent } from './components/prestation-list/prestation-list.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
+import { ServiceDetailsComponent } from './components/service-detail/service-detail.component';
 
 @NgModule({
     imports: [
@@ -25,6 +26,10 @@ import { TaskListComponent } from './components/task-list/task-list.component';
                     {
                         path: 'services',
                         component: ServiceListComponent,
+                    },
+                    {
+                        path: 'services/:serviceName', 
+                        component: ServiceDetailsComponent,
                     },
                     {
                         path: 'prestations',

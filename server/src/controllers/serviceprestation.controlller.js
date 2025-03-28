@@ -1,3 +1,8 @@
+const passport = require("passport");
+const Roles = require("../config/roles");
+const filterFactoryService = require("../services/filter.factory.service");
+const ServicePrestation = require("../models/ServicePrestation");
+const Pageable = require("../config/response/pageable");
 const router = require("express").Router();
 const ApiResponse = require("../config/response/api.response");
 const servprestService = require("../services/serviceprestation/servprest.service");
@@ -48,7 +53,7 @@ router.delete(
   authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-      const result = await prestationService.deletePrestation(req.params.id);
+      const result = await servprestService.deleteServicePrestation(req.params.id);
       res.json(new ApiResponse(result, "Prestation in service deleted successfully"));
     } catch (error) {
       if (error.message === 'Prestation in service not found') {
@@ -58,5 +63,25 @@ router.delete(
     }
   }
 );
+
+router.get(
+  "/:serviceName", 
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    try {
+      console.log("Searching for service:", req.params.serviceName);
+const prestations = await servprestService.getPrestationsByService(req.params.serviceName);
+console.log("Found:", prestations);
+      res.json(new ApiResponse(prestations, "Prestations retrieved successfully"));
+    } catch (error) {
+      if (error.message === 'No prestations found for this service') {
+        return res.status(404).json(new ApiResponse([], error.message, false));
+      }
+      next(error);
+    }
+  }
+);
+
+
 module.exports = router;
 

@@ -11,6 +11,17 @@ exports.getAllServicePrestations = async (page, size, filters) => {
     return servicePrestations;
 }
 
+exports.getPrestationsByService = async (service) => {
+    const servicePrestations = await ServicePrestation.find({ 
+        service: { $regex: new RegExp(`^${service}$`, 'i') }
+    }).populate('prestation').exec();
+    
+    if (!servicePrestations || servicePrestations.length === 0) {
+        throw new Error('No prestations found for this service');
+    }
+    return servicePrestations.map(sp => sp.prestation);
+}
+
 
 exports.deleteServicePrestation = async (id) => {
     const result = await ServicePrestation.deleteOne({ _id: id });

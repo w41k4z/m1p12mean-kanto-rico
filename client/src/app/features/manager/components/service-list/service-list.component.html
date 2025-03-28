@@ -27,22 +27,24 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-service>
-            <tr>
-                <td>{{ service.name }}</td>
+            <tr (click)="viewServiceDetails(service.name)" class="cursor-pointer">
                 <td>
+                    <span class="text-primary">{{ service.name }}</span>
+                </td>
+                <td (click)="$event.stopPropagation()">
                     <div class="flex gap-2">
-                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-sm p-button-text"
-                            (click)="showEditDialog(service)"></button>
-
-                            <button pButton pRipple icon="pi pi-trash"
-                            class="p-button-rounded p-button-sm p-button-text p-button-danger"
-                            (click)="deleteService(service)"
-                            pTooltip="Delete" tooltipPosition="top"></button>
+                        <button pButton pRipple icon="pi pi-pencil" 
+                                class="p-button-rounded p-button-sm p-button-text"
+                                (click)="showEditDialog(service); $event.stopPropagation()"></button>
+        
+                        <button pButton pRipple icon="pi pi-trash"
+                                class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                                (click)="deleteService(service); $event.stopPropagation()"
+                                pTooltip="Delete" tooltipPosition="top"></button>
                     </div>
                 </td>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="emptymessage">
             <tr>
                 <td colspan="1" class="text-center">No services found.</td>
