@@ -17,7 +17,6 @@ class SocketService {
                 socket.on('register', (userId) => {
                     this.clients[userId] = socket.id;
                     console.log(`User with id ${userId} registered with socket ${socket.id}`);
-                    this.io.to(socket.id).emit('notification', { message: "Your socket client is connected successfully" });
                 });
 
                 // Disconnect user
