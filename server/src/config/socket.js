@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const Notification = require('../models/Notification');
 
 class SocketService {
     constructor() {
@@ -29,10 +30,14 @@ class SocketService {
         }
     }
 
-    sendNotification(clientId, message) {
+    async sendNotification(clientId, message) {
         const socketId = this.clients[clientId];
+        
+        const notification = new Notification({ userId: clientId, message });
+        await notification.save();
+
         if (socketId) {
-            this.io.to(socketId).emit('notification', { message });
+            this.io.to(socketId).emit('notification', notification);
             console.log(`Notification sent to client ${clientId}`);
         } else {
             console.log(`Client ${clientId} is offline. Cannot send real-time notification.`);
