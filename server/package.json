@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=prod node src/server.js",
     "dev": "cross-env NODE_ENV=dev nodemon src/server.js",
-    "seed": "node seeds.js"
+    "seed": "cross-env NODE_ENV=prod node seeds.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

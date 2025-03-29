@@ -14,6 +14,9 @@ server.use(express.json());
 server.use(passport.initialize());
 
 // Routes
+server.get('/', (req, res) => {
+    res.send('Server is running!');
+});
 server.get('/favicon.ico', (req, res) => res.status(204).end());
 server.use('/api/auth', require('../controllers/auth.controller'));
 server.use(
