@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Endpoints } from 'src/app/core/config/endpoints';
 import { ApiResponse } from 'src/app/core/dto/response/api.response';
 import { ServiceListPayload } from 'src/app/core/dto/response/service/service.list.payload';
+import { Service } from 'src/app/core/dto/service';
 import { env } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ServService {
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient) { }
 
     getServices(page: number, size: number, filters: any) {
         let params = new HttpParams()
@@ -48,6 +49,24 @@ export class ServService {
         return this.httpClient.get<ApiResponse<ServiceListPayload>>(
             `${env.baseUrl}/${Endpoints.SERVICES}/with-prestations`,
             { params }
+        );
+    }
+    createService(name: string) {
+        return this.httpClient.post<ApiResponse<any>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}`,
+            { name }
+        );
+    }
+    updateService(id: string, data: { name: string}) {
+        return this.httpClient.put<ApiResponse<Service>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}/${id}`,
+            data
+        );
+    }
+
+    deleteService(id: string) {
+        return this.httpClient.delete<ApiResponse<void>>(
+            `${env.baseUrl}/${Endpoints.SERVICES}/${id}`
         );
     }
 }

@@ -1,31 +1,45 @@
 <div class="card">
-    <h5>Liste des services</h5>
-    <p-table #dt 
-        [value]="services"
-        [loading]="loadingServices"
-        [paginator]="true"
-        [rows]="pageSize"
-        [rowHover]="true"
-        [totalRecords]="totalRecords"
-        [lazy]="true"
-        (onPage)="onPageChange($event)"
-        (onFilter)="onFilterChange($event)"
-        responsiveLayout="scroll"
-    >
+    <p-toolbar>
+        <ng-template pTemplate="left">
+            <h5>Liste des services</h5>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <p-button label="Créer un service" icon="pi pi-plus" class="p-button-success"
+                (click)="openDialog()"></p-button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="services" [loading]="loadingServices" [paginator]="true" [rows]="pageSize" [rowHover]="true"
+        [totalRecords]="totalRecords" [lazy]="true" (onPage)="onPageChange($event)" (onFilter)="onFilterChange($event)"
+        responsiveLayout="scroll">
         <ng-template pTemplate="header">
             <tr>
                 <th>
                     <div class="flex justify-content-between align-items-center">
                         Nom
-                        <p-columnFilter type="text" field="name" display="menu" [showOperator]="false" [showAddButton]="false" [matchModeOptions]="nameFilterOptions" placeholder="Recherche par nom"></p-columnFilter>
+                        <p-columnFilter type="text" field="name" display="menu" [showOperator]="false"
+                            [showAddButton]="false" [matchModeOptions]="nameFilterOptions"
+                            placeholder="Recherche par nom"></p-columnFilter>
                     </div>
                 </th>
+                <th style="width: 10%"></th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-service>
             <tr>
                 <td>{{ service.name }}</td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-sm p-button-text"
+                            (click)="showEditDialog(service)"></button>
+
+                            <button pButton pRipple icon="pi pi-trash"
+                            class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                            (click)="deleteService(service)"
+                            pTooltip="Delete" tooltipPosition="top"></button>
+                    </div>
+                </td>
             </tr>
         </ng-template>
 
@@ -35,4 +49,35 @@
             </tr>
         </ng-template>
     </p-table>
+
+    <p-dialog [(visible)]="dialogVisible" header="Créer un Service" [modal]="true" [style]="{width: '50vw'}"
+        class="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="serviceName">Nom du Service</label>
+                <input id="serviceName" pInputText type="text" [(ngModel)]="newServiceName" required autofocus>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Annuler" (click)="dialogVisible = false"  class="p-button-danger"></button>
+            <p-button label="Valider" icon="pi pi-check" (click)="submitService()" class="p-button-primary"></p-button>
+        </ng-template>
+    </p-dialog>
+    <!-- Edit Dialog -->
+    <p-dialog [(visible)]="editDialogVisible" header="Modifier Service" [modal]="true" [style]="{width: '50vw'}"
+        *ngIf="selectedService" class="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="editServiceName">Nom</label>
+                <input id="editServiceName" pInputText type="text" [(ngModel)]="selectedService.name" required>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Annuler" (click)="editDialogVisible = false"
+                class="p-button-text"></button>
+            <button pButton type="button" label="Enregistrer" (click)="updateService()"
+                class="p-button-primary"></button>
+        </ng-template>
+    </p-dialog>
 </div>

@@ -25,6 +25,9 @@ exports.updatePrestation = async (id, name, price) => {
 }
 
 exports.deletePrestation = async (id) => {
-    let prestation = await Prestation.findById(id);
-    return prestation;
-}
+    const result = await Prestation.deleteOne({ _id: id });
+    if (result.deletedCount === 0) {
+        throw new Error('Prestation not found');
+    }
+    return { id };
+};
