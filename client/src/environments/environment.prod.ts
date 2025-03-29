@@ -1,4 +1,4 @@
 export const env = {
-    baseUrl: 'http://localhost:5000',
+    baseUrl: 'https://m1p12mean-kanto-rico.onrender.com',
     production: true,
 };
