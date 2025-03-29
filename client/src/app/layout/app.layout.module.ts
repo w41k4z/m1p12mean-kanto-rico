@@ -18,6 +18,8 @@ import { AppConfigModule } from './config/config.module';
 import { AppSidebarComponent } from './sidebar/app.sidebar.component';
 import { AppLayoutComponent } from './app.layout.component';
 import { EmptyComponent } from './empty/empty.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     declarations: [
@@ -31,6 +33,7 @@ import { EmptyComponent } from './empty/empty.component';
     ],
     imports: [
         BrowserModule,
+        BadgeModule,
         FormsModule,
         HttpClientModule,
         BrowserAnimationsModule,
@@ -42,6 +45,8 @@ import { EmptyComponent } from './empty/empty.component';
         RippleModule,
         RouterModule,
         AppConfigModule,
+        OverlayPanelModule,
+        ToastModule,
     ],
     exports: [AppLayoutComponent],
 })
