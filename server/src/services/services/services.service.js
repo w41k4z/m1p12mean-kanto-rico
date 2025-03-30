@@ -1,4 +1,5 @@
 const Service = require('../../models/Service');
+const ServicePrestation = require('../../models/ServicePrestation');
 
 exports.createService = async (nameParam) => {
     const {name} = nameParam;
@@ -7,7 +8,18 @@ exports.createService = async (nameParam) => {
 };
 
 exports.getAllServices = async (page, size, filters) => {
-    let services = await Service.find(filters).skip(page).limit(size);
+    let services = await Service.find(filters).skip(page).limit(size).lean();
+    return services;
+}
+
+exports.getAllServicesWithPrestations = async (page, size, filters) => {
+    let services = await this.getAllServices(page, size, filters);
+    for (let service of services) {
+        const servicePrestations = await ServicePrestation.find({
+            service: service._id,
+        }).populate("prestation");
+        service.prestations = servicePrestations.map(sp => sp.prestation);
+    }
     return services;
 }
 
@@ -18,6 +30,9 @@ exports.updateService = async (id, name) => {
 };
 
 exports.deleteService = async (id) => {
-    let service = await Service.findById(id);
-    return service;
-}
+    const result = await Service.deleteOne({ _id: id });
+    if (result.deletedCount === 0) {
+        throw new Error('Service not found');
+    }
+    return { id };
+};

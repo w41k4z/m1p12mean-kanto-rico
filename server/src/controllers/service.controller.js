@@ -49,10 +49,31 @@ router.get(
   }
 );
 
+router.get(
+  "/with-prestations",
+  async (req, res, next) => {
+    try {
+      const page = parseInt(req.query.page) || 0;
+      const size = parseInt(req.query.size) || 10;
+      let filters = {};
+      if (req.query.filters) {
+          const rawFilters = req.query.filters;
+          filters = filterFactoryService.createFilters(rawFilters);
+      }
+      const services = await serviceService.getAllServicesWithPrestations(page, size, filters);
+      const totalElements = await Service.countDocuments(filters);
+      const payload = { services: new Pageable(services, page, size, totalElements) };
+      res.json(new ApiResponse(payload));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.put(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
       const updatedService = await serviceService.updateService(
@@ -71,14 +92,15 @@ router.put(
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  passport.authorize([Roles.MANAGER]),
+  authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-      const deletedService = await serviceService.deleteService(req.params.id);
-      await deletedService.remove();
-      const message = "Service deleted";
-      res.json(new ApiResponse(null, message));
+      const result = await serviceService.deleteService(req.params.id);
+      res.json(new ApiResponse(result, "Service deleted successfully"));
     } catch (error) {
+      if (error.message === 'Service not found') {
+        return res.status(404).json(new ApiResponse(null, error.message, false));
+      }
       next(error);
     }
   }

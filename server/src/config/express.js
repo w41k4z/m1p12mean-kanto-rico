@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const passport = require('./auth/passport');
@@ -13,6 +14,10 @@ server.use(express.json());
 server.use(passport.initialize());
 
 // Routes
+server.get('/', (req, res) => {
+    res.send('Server is running!');
+});
+server.get('/favicon.ico', (req, res) => res.status(204).end());
 server.use('/api/auth', require('../controllers/auth.controller'));
 server.use(
     '/api/accounts',
@@ -26,8 +31,6 @@ server.use(
     authorize([Roles.MANAGER]),
     require('../controllers/user.controller')
 );
-server.use('api/prestations', require('../controllers/prestation.controller'));
-server.use('api/services', require('../controllers/service.controller'));
 server.use(
     '/api/tokens',
     passport.authenticate("jwt", { session: false }),
@@ -37,6 +40,7 @@ server.use('/api/prestations', require('../controllers/prestation.controller'));
 server.use('/api/services', require('../controllers/service.controller'));
 server.use('/api/tasks', require('../controllers/task.controller'));
 server.use('/api/taskDetails', require('../controllers/detailTask.controller'));
+server.use('/api/notifications', require('../controllers/notificationl.controller'));
 
 
 // Error handling
@@ -50,4 +54,4 @@ server.use((err, req, res, next) => {
     return res.status(statusCode).json({ message: errorMessage });
 });
 
-module.exports = server;
+module.exports = http.createServer(server);

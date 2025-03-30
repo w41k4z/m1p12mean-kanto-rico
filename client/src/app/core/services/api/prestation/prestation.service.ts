@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Endpoints } from 'src/app/core/config/endpoints';
+import { Prestation } from 'src/app/core/dto/prestation';
 import { ApiResponse } from 'src/app/core/dto/response/api.response';
 import { PrestationListPayload } from 'src/app/core/dto/response/prestation/prestation.list.payload';
 import { env } from 'src/environments/environment';
@@ -25,9 +26,30 @@ export class PrestationService {
                 }
             });
         }
+    
         return this.httpClient.get<ApiResponse<PrestationListPayload>>(
             `${env.baseUrl}/${Endpoints.PRESTATIONS}`,
             { params }
+        );
+    }
+
+    createPrestation(prestationData: Omit<Prestation, '_id'>) {
+        return this.httpClient.post<ApiResponse<any>>(
+            `${env.baseUrl}/${Endpoints.PRESTATIONS}`,
+           prestationData
+        );
+    }
+
+    updatePrestation(id: string, data: { name: string, price: number }) {
+        return this.httpClient.put<ApiResponse<Prestation>>(
+            `${env.baseUrl}/${Endpoints.PRESTATIONS}/${id}`,
+            data
+        );
+    }
+    
+    deletePrestation(id: string) {
+        return this.httpClient.delete<ApiResponse<void>>(
+            `${env.baseUrl}/${Endpoints.PRESTATIONS}/${id}`
         );
     }
 }
