@@ -30,4 +30,11 @@ export class UserService {
             { params }
         );
     }
+
+    createUser(userObject: any) {
+        return this.httpClient.post(
+            `${env.baseUrl}/${Endpoints.ACCOUNTS}/create/${userObject.role}`,
+            userObject
+        );
+    }
 }

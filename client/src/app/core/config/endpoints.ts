@@ -11,4 +11,6 @@ export class Endpoints {
     public static readonly TASKS = 'api/tasks';
 
     public static readonly NOTIFICATIONS = 'api/notifications';
+
+    public static readonly ACCOUNTS = 'api/accounts';
 }
