@@ -5,8 +5,16 @@
                 <ng-template pTemplate="left">
                     <h5>Liste des utilisateurs</h5>
                 </ng-template>
-        
+
                 <ng-template pTemplate="right">
+                    <button
+                        pButton
+                        pRipple
+                        label="Créer un utilisateur"
+                        icon="pi pi-plus"
+                        class="p-button-help mr-2"
+                        (click)="openUserDialog()"
+                    ></button>
                     <button
                         pButton
                         pRipple
@@ -69,7 +77,7 @@
                         <th>Type</th>
                     </tr>
                 </ng-template>
-        
+
                 <ng-template pTemplate="body" let-user>
                     <tr>
                         <td>{{ user.lastName }}</td>
@@ -78,40 +86,137 @@
                         <td>{{ user.role.name }}</td>
                     </tr>
                 </ng-template>
-        
+
                 <ng-template pTemplate="emptymessage">
                     <tr>
-                        <td colspan="4" class="text-center">Aucun utilisateur trouvé.</td>
+                        <td colspan="4" class="text-center">
+                            Aucun utilisateur trouvé.
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
     </div>
 </div>
-<!-- <p-dialog [(visible)]="userDialog" [style]="{width: '450px'}" header="Détails de l'utilisateur" [modal]="true"
-    class="p-fluid">
+
+<p-dialog
+    [(visible)]="userDialog"
+    [style]="{ width: '450px' }"
+    header="Détails de l'utilisateur"
+    [modal]="true"
+    class="p-fluid"
+>
     <ng-template pTemplate="content">
         <div class="field">
             <label for="lastName">Nom</label>
-            <input type="text" pInputText id="lastName" [(ngModel)]="userObject.lastName" required autofocus
-                [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.lastName}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.lastName">Le nom est requis.</small>
+            <input
+                type="text"
+                pInputText
+                id="lastName"
+                [(ngModel)]="userObject.lastName"
+                required
+                autofocus
+                [ngClass]="{
+                    'ng-invalid ng-dirty': submitted && !userObject.lastName
+                }"
+            />
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !userObject.lastName"
+                >Le nom est requis.</small
+            >
         </div>
         <div class="field">
             <label for="firstName">Prénom</label>
-            <input type="text" pInputText id="firstName" [(ngModel)]="userObject.firstName" required [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.lastName}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.firstName">Le prénom est requis.</small>
+            <input
+                type="text"
+                pInputText
+                id="firstName"
+                [(ngModel)]="userObject.firstName"
+                required
+                [ngClass]="{
+                    'ng-invalid ng-dirty': submitted && !userObject.lastName
+                }"
+            />
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !userObject.firstName"
+                >Le prénom est requis.</small
+            >
         </div>
         <div class="field">
-            <label for="username">Identifiant</label>
-            <input type="text" pInputText id="username" [(ngModel)]="userObject.username" required
-                [ngClass]="{'ng-invalid ng-dirty' : submitted && !userObject.username}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !userObject.username">L'identifiant est requis.</small>
+            <label for="username">Email</label>
+            <input
+                type="email"
+                pInputText
+                id="username"
+                [(ngModel)]="userObject.username"
+                required
+                [ngClass]="{
+                    'ng-invalid ng-dirty': submitted && !userObject.username
+                }"
+            />
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !userObject.username"
+                >L'email est requis.</small
+            >
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !isValidEmail(userObject.username)"
+                >L'email est invalide.</small
+            >
+        </div>
+        <div class="field">
+            <label for="password">Mot de passe</label>
+            <input
+                type="password"
+                pInputText
+                id="password"
+                [(ngModel)]="userObject.password"
+                required
+                [ngClass]="{
+                    'ng-invalid ng-dirty': submitted && !userObject.password
+                }"
+            />
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !userObject.password"
+                >Le mot de passe est requis.</small
+            >
+        </div>
+        <div class="field">
+            <label for="role">Type</label>
+            <p-dropdown
+                id="role"
+                [options]="roles"
+                [(ngModel)]="userObject.role"
+                appendTo="body"
+            ></p-dropdown>
+            <small
+                class="ng-dirty ng-invalid text-red-500"
+                *ngIf="submitted && !userObject.role"
+                >Le type d'utilisateur est requis.</small
+            >
         </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="Sauvegarder" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+        <button
+            pButton
+            pRipple
+            label="Annuler"
+            icon="pi pi-times"
+            class="p-button-text"
+            (click)="hideUserDialog()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            label="Sauvegarder"
+            icon="pi pi-check"
+            class="p-button-text"
+            (click)="saveUser()"
+        ></button>
     </ng-template>
-</p-dialog> -->
+</p-dialog>

@@ -1,0 +1,91 @@
+<p-toast position="top-right"></p-toast>
+
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <div class="flex justify-content-between align-items-center mb-4">
+                <h2 class="text-2xl font-bold">Achat de Jetons</h2>
+                <p class="text-lg font-semibold">
+                    {{ availableToken | number : "1.0-2" : "fr" }} <b>jt</b>
+                </p>
+            </div>
+
+            <div class="flex gap-4">
+                <!-- Form Section -->
+                <p-panel class="flex-1">
+                    <ng-template pTemplate="header"> Achat </ng-template>
+                    <div class="field">
+                        <label for="tokenAmount">Nombre de jetons</label>
+                        <input
+                            id="tokenAmount"
+                            type="number"
+                            pInputText
+                            [(ngModel)]="tokenAmount"
+                            min="0"
+                            required
+                            class="w-full"
+                        />
+                    </div>
+                    <div class="text-right mt-3">
+                        <p-button
+                            label="Acheter"
+                            icon="pi pi-shopping-cart"
+                            class="p-button-primary"
+                            (onClick)="openConfirmDialog()"
+                        ></p-button>
+                    </div>
+                </p-panel>
+
+                <!-- Conversion Table -->
+                <p-panel class="flex-1">
+                    <ng-template pTemplate="header"> Conversion </ng-template>
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>Montant (Ar)</th>
+                                <th>Jetons (jt)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>100 Ar</td>
+                                <td>10 jt</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p-panel>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog
+    [(visible)]="confirmDialogVisible"
+    [modal]="true"
+    header="Confirmer"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+>
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Est-ce que vous êtes sûr de confirmer cette transaction?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="Non"
+            (click)="closeConfirmDialog()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Oui"
+            (click)="purchaseToken()"
+        ></button>
+    </ng-template>
+</p-dialog>

@@ -15,15 +15,20 @@ import { PrestationListComponent } from './components/prestation-list/prestation
 import { UserListComponent } from './components/user-list/user-list.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 
-
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { DropdownModule } from 'primeng/dropdown';
 
 registerLocaleData(localeFr, 'fr');
 
-
 @NgModule({
-    declarations: [HomeComponent, UserListComponent, ServiceListComponent,PrestationListComponent,TaskListComponent],
+    declarations: [
+        HomeComponent,
+        UserListComponent,
+        ServiceListComponent,
+        PrestationListComponent,
+        TaskListComponent,
+    ],
     imports: [
         CommonModule,
         ManagerRoutingModule,
@@ -34,6 +39,7 @@ registerLocaleData(localeFr, 'fr');
         RippleModule,
         DialogModule,
         InputTextModule,
+        DropdownModule,
     ],
 })
 export class ManagerModule {}
