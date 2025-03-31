@@ -18,6 +18,10 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
+import { ToastModule } from 'primeng/toast';
+import { TokenPurchaseComponent } from './components/token-purchase/token-purchase.component';
+import { PanelModule } from 'primeng/panel';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -26,6 +30,7 @@ registerLocaleData(localeFr, 'fr');
         HomeComponent,
         TokenTransactionComponent,
         ServiceListComponent,
+        TokenPurchaseComponent,
     ],
     imports: [
         CommonModule,
@@ -42,6 +47,9 @@ registerLocaleData(localeFr, 'fr');
         DialogModule,
         InputTextModule,
         PaginatorModule,
+        ToastModule,
+        PanelModule,
+        InputNumberModule,
     ],
 })
 export class ClientModule {}

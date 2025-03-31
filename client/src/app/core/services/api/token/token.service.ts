@@ -34,4 +34,11 @@ export class TokenService {
             { params }
         );
     }
+
+    createTransaction(description: string, amount: number) {
+        return this.httpClient.post(`${env.baseUrl}/${Endpoints.TOKENS}`, {
+            description,
+            amount,
+        });
+    }
 }

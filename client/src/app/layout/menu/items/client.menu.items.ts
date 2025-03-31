@@ -22,6 +22,11 @@ export default [
                 icon: 'pi pi-fw pi-history',
                 routerLink: ['/client/token-transactions'],
             },
+            {
+                label: 'Achat',
+                icon: 'pi pi-fw pi-credit-card',
+                routerLink: ['/client/token-purchase'],
+            },
         ],
     },
 ];

@@ -11,17 +11,21 @@ const Task = require("../models/Task");
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  authorize([Roles.MANAGER]),
-  async (req, res, next) => { 
-      const { idClient, prestations, dateDebut } = req.body;
+  authorize([Roles.MANAGER, Roles.CLIENT]),
+  async (req, res, next) => {
+    const { idClient, prestations, dateDebut } = req.body;
 
-      try {
-          const task = await taskService.createTaskWithPrestations(idClient, prestations, dateDebut);
-          const message = "Task created successfully";
-          res.status(201).json(new ApiResponse(task, message));
-      } catch (error) {
-          next(error); 
-      }
+    try {
+      const task = await taskService.createTaskWithPrestations(
+        idClient,
+        prestations,
+        dateDebut
+      );
+      const message = "Task created successfully";
+      res.status(201).json(new ApiResponse(task, message));
+    } catch (error) {
+      next(error);
+    }
   }
 );
 // router.post(
@@ -44,27 +48,27 @@ router.post(
 // });
 
 router.get(
-    "/",
-    passport.authenticate("jwt", { session: false }),
-    authorize([Roles.MANAGER]),
-    async (req, res, next) => {
-  try {
-    const page = parseInt(req.query.page) || 0;
-    const size = parseInt(req.query.size) || 10;
-    let filters = {};
-    if (req.query.filters) {
-      const rawFilters = req.query.filters;
-      filters = filterFactoryService.createFilters(rawFilters);
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  authorize([Roles.MANAGER]),
+  async (req, res, next) => {
+    try {
+      const page = parseInt(req.query.page) || 0;
+      const size = parseInt(req.query.size) || 10;
+      let filters = {};
+      if (req.query.filters) {
+        const rawFilters = req.query.filters;
+        filters = filterFactoryService.createFilters(rawFilters);
+      }
+      const tasks = await taskService.getAllTasks(page, size, filters);
+      const totalElements = await Task.countDocuments(filters);
+      const payload = { tasks: new Pageable(tasks, page, size, totalElements) };
+      res.json(new ApiResponse(payload));
+    } catch (error) {
+      next(error);
     }
-    const tasks = await taskService.getAllTasks(page, size, filters);
-    const totalElements = await Task.countDocuments(filters);
-    const payload = { tasks: new Pageable(tasks, page, size, totalElements) };
-    res.json(new ApiResponse(payload));
-  } catch (error) {
-    next(error);
   }
-});
-
+);
 
 router.put(
   "/:id",
@@ -74,8 +78,7 @@ router.put(
     try {
       const updatedService = await taskService.updateTask(
         req.params.id,
-        req.body.dateDebut.
-        req.body.status
+        req.body.dateDebut.req.body.status
       );
       await updatedService.save();
       const message = "Task updated";

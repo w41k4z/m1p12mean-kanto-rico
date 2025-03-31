@@ -5,12 +5,11 @@ import { ApiResponse } from 'src/app/core/dto/response/api.response';
 import { TaskListPayload } from 'src/app/core/dto/response/task/task.list.payload';
 import { env } from 'src/environments/environment';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class TaskService {
-    constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) {}
     getTasks(page: number, size: number, filters: any) {
         let params = new HttpParams()
             .set('page', page.toString())
@@ -29,5 +28,14 @@ export class TaskService {
             `${env.baseUrl}/${Endpoints.TASKS}`,
             { params }
         );
+    }
+
+    createTask(idClient: string, prestations: { id: string; name: string }[]) {
+        return this.httpClient.post(`${env.baseUrl}/${Endpoints.TASKS}`, {
+            idClient,
+            prestations: {
+                prestations,
+            },
+        });
     }
 }

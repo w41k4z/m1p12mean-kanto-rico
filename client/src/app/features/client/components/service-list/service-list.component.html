@@ -1,72 +1,163 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="grid">
     <div class="col-12">
         <div class="card">
             <div class="flex justify-content-between mb-6">
                 <h2 class="text-2xl hidden sm:block font-bold">Nos Services</h2>
-                <p-button label="Créer un service personnalisé" icon="pi pi-plus" (click)="openCustomServiceDialog()"
-                    class="p-button-success"></p-button>
+                <p-button
+                    label="Créer un service personnalisé"
+                    icon="pi pi-plus"
+                    (click)="openCustomServiceDialog()"
+                    class="p-button-success"
+                ></p-button>
             </div>
-            
-            <div *ngIf="services.length > 0; else noServices" class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 gap-4">
-                <p-card *ngFor="let service of services" styleClass="shadow surface-ground px-2">
+
+            <div
+                *ngIf="services.length > 0; else noServices"
+                class="grid grid-cols-1 md:grid-cols-5 lg:grid-cols-3 gap-4"
+            >
+                <p-card
+                    *ngFor="let service of services"
+                    styleClass="shadow surface-ground px-2"
+                >
                     <ng-template pTemplate="title">
-                        <i class="pi pi-car mr-3" style="font-size: 1.15rem"></i><span class="text-xl">{{ service.name }}</span>
+                        <i class="pi pi-car mr-3" style="font-size: 1.15rem"></i
+                        ><span class="text-xl">{{ service.name }}</span>
                     </ng-template>
                     <ng-template pTemplate="content">
                         <ul class="mt-2">
-                            <li *ngFor="let prestation of service.prestations" class="text-sm">
-                                {{ prestation.name }} - {{ prestation.price | number:'1.0-2':'fr' }} <b>jt</b>
+                            <li
+                                *ngFor="let prestation of service.prestations"
+                                class="text-sm"
+                            >
+                                {{ prestation.name }} -
+                                {{ prestation.price | number : "1.0-2" : "fr" }}
+                                <b>jt</b>
                             </li>
                         </ul>
                     </ng-template>
                     <ng-template pTemplate="footer">
                         <div class="flex justify-content-end">
-                            <p-button label="Choisir" icon="pi pi-check" (click)="selectService(service)"
-                                class="p-button-primary"></p-button>
+                            <p-button
+                                label="Choisir"
+                                icon="pi pi-check"
+                                (click)="selectService(service)"
+                                class="p-button-primary"
+                            ></p-button>
                         </div>
                     </ng-template>
                 </p-card>
             </div>
 
-            <p-paginator [rows]="pageSize" [totalRecords]="totalRecords" (onPageChange)="onPageChange($event)" styleClass="mt-4"></p-paginator>
-
+            <p-paginator
+                [rows]="pageSize"
+                [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange($event)"
+                styleClass="mt-4"
+            ></p-paginator>
 
             <ng-template #noServices>
-                <div class="flex flex-col justify-content-center align-items-center text-gray-500 py-10">
+                <div
+                    class="flex flex-col justify-content-center align-items-center text-gray-500 py-10"
+                >
                     <i class="pi pi-info-circle text-4xl mr-3"></i>
-                    <p class="text-lg">Aucun service disponible pour le moment.</p>
+                    <p class="text-lg">
+                        Aucun service disponible pour le moment.
+                    </p>
                 </div>
             </ng-template>
         </div>
     </div>
 </div>
 
-<p-dialog [(visible)]="customServiceDialogVisible" header="Créer un Service" [modal]="true" [style]="{width: '50vw'}"
-    class="p-fluid">
+<p-dialog
+    [(visible)]="customServiceDialogVisible"
+    header="Créer un Service"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    class="p-fluid"
+>
     <ng-template pTemplate="content">
         <div class="field">
             <label for="serviceName">Description</label>
-            <input id="serviceName" pInputText type="text" [(ngModel)]="customService.name" required autofocus>
+            <input
+                id="serviceName"
+                pInputText
+                type="text"
+                [(ngModel)]="selectedService.name"
+                required
+                autofocus
+            />
         </div>
         <div class="field">
-            <p-multiSelect defaultLabel="Sélectionner les prestations" [options]="prestations"
-                [(ngModel)]="customService.prestations" optionLabel="name" class="multiselect-custom" appendTo="body">
+            <p-multiSelect
+                defaultLabel="Sélectionner les prestations"
+                [options]="prestations"
+                [(ngModel)]="selectedService.prestations"
+                optionLabel="name"
+                class="multiselect-custom"
+                appendTo="body"
+            >
                 <ng-template let-value pTemplate="selectedItems">
-                    <div class="prestation-item prestation-item-value" *ngFor="let option of customService.prestations">
-                        <div>{{option.name}}</div>
+                    <div
+                        class="prestation-item prestation-item-value"
+                        *ngFor="let option of selectedService.prestations"
+                    >
+                        <div>{{ option.name }}</div>
                     </div>
-                    <div *ngIf="!customService.prestations || customService.prestations.length === 0">
+                    <div
+                        *ngIf="
+                            !selectedService.prestations ||
+                            selectedService.prestations.length === 0
+                        "
+                    >
                         Sélectionner les prestations
                     </div>
                 </ng-template>
                 <ng-template let-prestation pTemplate="item">
-                    {{prestation.name}}
+                    {{ prestation.name }}
                 </ng-template>
             </p-multiSelect>
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
-        <p-button label="Valider" icon="pi pi-check" (click)="submitCustomService()"
-            class="p-button-primary"></p-button>
+        <p-button
+            label="Valider"
+            icon="pi pi-check"
+            (click)="openSelectionConfirmationDialog()"
+            class="p-button-primary"
+        ></p-button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog
+    [(visible)]="selectionConfirmationDialogVisible"
+    [modal]="true"
+    header="Confirmer"
+    [modal]="true"
+    [style]="{ width: '450px' }"
+>
+    <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Est-ce que vous êtes sûr de choisir ce service?</span>
+    </div>
+    <ng-template pTemplate="footer">
+        <button
+            pButton
+            pRipple
+            icon="pi pi-times"
+            class="p-button-text"
+            label="Non"
+            (click)="closeSelectionConfirmationDialog()"
+        ></button>
+        <button
+            pButton
+            pRipple
+            icon="pi pi-check"
+            class="p-button-text"
+            label="Oui"
+            (click)="submitService()"
+        ></button>
     </ng-template>
 </p-dialog>
