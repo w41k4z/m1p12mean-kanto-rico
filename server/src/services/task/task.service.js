@@ -4,9 +4,6 @@ const Prestation = require("../../models/Prestation");
 const mongoose = require("mongoose");
 
 exports.createTaskWithPrestations = async (idClient, serviceData) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
   try {
     if (!serviceData?.prestations || !Array.isArray(serviceData.prestations)) {
       throw new Error("Service data must contain a prestations array");
@@ -35,19 +32,14 @@ exports.createTaskWithPrestations = async (idClient, serviceData) => {
 
     await TaskDetail.insertMany(taskDetails, { session });
 
-    await session.commitTransaction();
-
     return {
       taskId: savedTask._id,
       prestationCount: taskDetails.length,
     };
   } catch (error) {
-    await session.abortTransaction();
     console.error("Transaction failed:", error.message);
     throw error;
-  } finally {
-    session.endSession();
-  }
+  } 
 };
 
 exports.createTask = async (idClientParam, dateDebutParam, statusParam) => {
