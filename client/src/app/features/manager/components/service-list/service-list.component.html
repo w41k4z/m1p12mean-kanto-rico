@@ -88,7 +88,8 @@
         </ng-template>
     </p-dialog>
     <!-- Delete dialog-->
-    <p-dialog [(visible)]="deleteDialogVisible" header="Confirmation" [modal]="true" [style]="{width: '350px'}">
+    <p-dialog [(visible)]="deleteDialogVisible" header="Confirmation" [modal]="true" [style]="{width: '350px'}"
+    class="p-fluid">
         <ng-template pTemplate="content">
             <div class="confirmation-content">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
