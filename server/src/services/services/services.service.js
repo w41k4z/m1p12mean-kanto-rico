@@ -7,10 +7,25 @@ exports.createService = async (nameParam) => {
     return newService;
 };
 
-exports.getAllServices = async (page, size, filters) => {
-    let services = await Service.find(filters).skip(page).limit(size).lean();
+exports.getAllServices = async (page, size, filters = {}) => {
+    const query = {
+        status: 'OK'
+    };
+    if (filters && typeof filters === 'object' && filters.search) {
+        query.name = { $regex: filters.search, $options: 'i' };
+    }
+
+    const [services] = await Promise.all([
+        Service.find(query)
+            .skip((page - 1) * size)
+            .limit(size)
+            .sort({ createdAt: -1 })
+            .lean(),
+        Service.countDocuments(query)
+    ]);
+
     return services;
-}
+};
 
 exports.getAllServicesWithPrestations = async (page, size, filters) => {
     let services = await this.getAllServices(page, size, filters);
@@ -30,9 +45,7 @@ exports.updateService = async (id, name) => {
 };
 
 exports.deleteService = async (id) => {
-    const result = await Service.deleteOne({ _id: id });
-    if (result.deletedCount === 0) {
-        throw new Error('Service not found');
-    }
-    return { id };
+    let service = await Service.findById(id);
+    service.status = 'Supprime';
+    await service.save();
 };

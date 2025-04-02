@@ -11,11 +11,13 @@ import { PrestationService } from 'src/app/core/services/api/prestation/prestati
 })
 export class PrestationListComponent implements OnInit {
     prestations: Prestation[] = [];
-    newPrestation: Prestation = new Prestation('', '', 0);
+    newPrestation: Prestation = new Prestation('', '', 0,'');
     loadingPrestations: boolean = true;
     dialogVisible: boolean = false;
     editDialogVisible: boolean = false;
     selectedPrestation: Prestation | null = null;
+    deleteDialogVisible: boolean = false;
+    prestationToDelete: any = null;
     totalRecords: number = 0;
     pageSize: number = 10;
     filters: any = {};
@@ -71,7 +73,7 @@ export class PrestationListComponent implements OnInit {
 
 
     createNewPrestation() {
-        this.newPrestation = new Prestation('', '', 0);
+        this.newPrestation = new Prestation('', '', 0, '');
         this.dialogVisible = true;
     }
 
@@ -92,7 +94,8 @@ export class PrestationListComponent implements OnInit {
         }
         const prestationData = {
             name: this.newPrestation.name,
-            price: price
+            price: price,
+            status: 'OK'
         };
         this.prestationService.createPrestation(prestationData).subscribe({
             next: () => {
@@ -150,26 +153,55 @@ export class PrestationListComponent implements OnInit {
             }
         });
     }
-    deletePrestation(prestation: Prestation) {
-        this.prestationService.deletePrestation(prestation._id).subscribe({
-            next: () => {
-                this.prestations = this.prestations.filter(p => p._id !== prestation._id);
-                this.totalRecords--;
+    // deletePrestation(prestation: Prestation) {
+    //     this.prestationService.deletePrestation(prestation._id).subscribe({
+    //         next: () => {
+    //             this.prestations = this.prestations.filter(p => p._id !== prestation._id);
+    //             this.totalRecords--;
                 
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Prestation deleted successfully'
+    //             this.messageService.add({
+    //                 severity: 'success',
+    //                 summary: 'Success',
+    //                 detail: 'Prestation deleted successfully'
+    //             });
+    //         },
+    //         error: (err) => {
+    //             this.messageService.add({
+    //                 severity: 'error',
+    //                 summary: 'Error',
+    //                 detail: err.error?.message || 'Failed to delete prestation'
+    //             });
+    //         }
+    //     }); 
+    // }
+    deletePrestation(prestation: any) {
+        this.prestationToDelete = prestation;
+        this.deleteDialogVisible = true;
+    }
+    confirmDelete() {
+        if (this.prestationToDelete) {
+            this.loadingPrestations = true;
+            this.prestationService.deletePrestation(this.prestationToDelete._id)
+                .subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Succès',
+                            detail: 'Service supprimé avec succès'
+                        });
+                        this.loadPrestations(0, this.pageSize);
+                    },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erreur',
+                            detail: 'Échec de la suppression'
+                        });
+                        this.loadingPrestations = false;
+                    }
                 });
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: err.error?.message || 'Failed to delete prestation'
-                });
-            }
-        }); 
+        }
+        this.deleteDialogVisible = false;
     }
 
 }

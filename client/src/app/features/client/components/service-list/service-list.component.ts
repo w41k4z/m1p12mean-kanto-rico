@@ -21,7 +21,7 @@ export class ServiceListComponent implements OnInit {
     pageSize: number = 10;
     loading: boolean = true;
 
-    selectedService: Service = new Service('', '', []);
+    selectedService: Service = new Service('', '', '',[]);
     customServiceDialogVisible: boolean = false;
 
     selectionConfirmationDialogVisible: boolean = false;
@@ -79,6 +79,7 @@ export class ServiceListComponent implements OnInit {
                 return {
                     id: prestation._id,
                     name: prestation.name,
+                
                 };
             }),
         });
@@ -87,7 +88,7 @@ export class ServiceListComponent implements OnInit {
 
     openCustomServiceDialog() {
         this.customServiceDialogVisible = true;
-        this.selectedService = new Service('', '', []);
+        this.selectedService = new Service('', '','', []);
     }
 
     submitService() {
@@ -123,7 +124,7 @@ export class ServiceListComponent implements OnInit {
                         });
                         this.customServiceDialogVisible = false;
                         this.selectionConfirmationDialogVisible = false;
-                        this.selectedService = new Service('', '', []);
+                        this.selectedService = new Service('', '','', []);
                     },
                     error: (error) => {
                         this.messageService.add({
@@ -134,7 +135,7 @@ export class ServiceListComponent implements OnInit {
                         });
                         this.customServiceDialogVisible = false;
                         this.selectionConfirmationDialogVisible = false;
-                        this.selectedService = new Service('', '', []);
+                        this.selectedService = new Service('', '','',[]);
                     },
                 });
         }

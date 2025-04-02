@@ -17,6 +17,8 @@ export class ServiceListComponent implements OnInit {
     dialogVisible: boolean = false;
     editDialogVisible: boolean = false;
     selectedService: Service | null = null;
+    deleteDialogVisible: boolean = false;
+    serviceToDelete: any = null;
 
     totalRecords: number = 0;
     pageSize: number = 10;
@@ -119,26 +121,36 @@ export class ServiceListComponent implements OnInit {
             }
         });
     }
-    deleteService(service: Service) {
-        this.servService.deleteService(service._id).subscribe({
-            next: () => {
-                this.services = this.services.filter(s => s._id !== service._id);
-                this.totalRecords--;
 
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Service deleted successfully'
+    deleteService(service: any) {
+        this.serviceToDelete = service;
+        this.deleteDialogVisible = true;
+    }
+
+    confirmDelete() {
+        if (this.serviceToDelete) {
+            this.loadingServices = true;
+            this.servService.deleteService(this.serviceToDelete._id)
+                .subscribe({
+                    next: () => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Succès',
+                            detail: 'Service supprimé avec succès'
+                        });
+                        this.loadServices(0, this.pageSize);
+                    },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Erreur',
+                            detail: 'Échec de la suppression'
+                        });
+                        this.loadingServices = false;
+                    }
                 });
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: err.error?.message || 'Failed to delete service'
-                });
-            }
-        });
+        }
+        this.deleteDialogVisible = false;
     }
 
 

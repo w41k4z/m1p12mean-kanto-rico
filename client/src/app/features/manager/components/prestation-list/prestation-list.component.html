@@ -1,3 +1,10 @@
+<style>
+    .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
 <div class="card">
     <p-toolbar>
         <ng-template pTemplate="left">
@@ -41,9 +48,8 @@
                             (click)="showEditDialog(prestation)"></button>
 
                         <button pButton pRipple icon="pi pi-trash"
-                        class="p-button-rounded p-button-sm p-button-text p-button-danger"
-                        (click)="deletePrestation(prestation)"
-                        pTooltip="Delete" tooltipPosition="top"></button>
+                            class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                            (click)="deletePrestation(prestation)" pTooltip="Supprimer" tooltipPosition="top"></button>
                     </div>
                 </td>
             </tr>
@@ -98,6 +104,20 @@
                 class="p-button-text"></button>
             <button pButton type="button" label="Enregistrer" (click)="updatePrestation()"
                 class="p-button-primary"></button>
+        </ng-template>
+    </p-dialog>
+     <!-- Delete dialog-->
+     <p-dialog [(visible)]="deleteDialogVisible" header="Confirmation" [modal]="true" [style]="{width: '350px'}">
+        <ng-template pTemplate="content">
+            <div class="confirmation-content">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Êtes-vous sûr de vouloir supprimer ce prestatition ?</span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Non" (click)="deleteDialogVisible = false"
+                class="p-button-text"></button>
+            <button pButton type="button" label="Oui" (click)="confirmDelete()" class="p-button-danger"></button>
         </ng-template>
     </p-dialog>
 </div>

@@ -15,7 +15,7 @@ router.post(
   authorize([Roles.MANAGER]),
   async (req, res, next) => {
     try {
-        const newPrestation = await prestationService.createPrestation({
+      const newPrestation = await prestationService.createPrestation({
         name: req.body.name,
         price: req.body.price,
       });
@@ -30,16 +30,20 @@ router.post(
 
 router.get("/", async (req, res, next) => {
   try {
-    const page = parseInt(req.query.page) || 0;
+    const page = parseInt(req.query.page) || 1;
     const size = parseInt(req.query.size) || 10;
     let filters = {};
+    if (req.query.search) {
+      filters.search = req.query.search;
+    }
     if (req.query.filters) {
-      const rawFilters = req.query.filters;
-      filters = filterFactoryService.createFilters(rawFilters);
+      filters = { ...filters, ...filterFactoryService.createFilters(req.query.filters) };
     }
     const prestations = await prestationService.getAllPrestations(page, size, filters);
-    const totalElements = await Prestation.countDocuments(filters);
-    const payload = { prestations: new Pageable(prestations, page, size, totalElements) };
+    const totalElements = await Prestation.countDocuments({ ...filters, status: 'OK' });
+      const payload = { 
+        prestations: new Pageable(prestations, page, size, totalElements) 
+      };
     res.json(new ApiResponse(payload));
   } catch (error) {
     next(error);

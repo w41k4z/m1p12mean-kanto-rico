@@ -1,3 +1,10 @@
+<style>
+    .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
 <div class="card">
     <p-toolbar>
         <ng-template pTemplate="left">
@@ -34,10 +41,9 @@
                         <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-sm p-button-text"
                             (click)="showEditDialog(service)"></button>
 
-                            <button pButton pRipple icon="pi pi-trash"
+                        <button pButton pRipple icon="pi pi-trash"
                             class="p-button-rounded p-button-sm p-button-text p-button-danger"
-                            (click)="deleteService(service)"
-                            pTooltip="Delete" tooltipPosition="top"></button>
+                            (click)="deleteService(service)" pTooltip="Supprimer" tooltipPosition="top"></button>
                     </div>
                 </td>
             </tr>
@@ -60,7 +66,8 @@
         </ng-template>
 
         <ng-template pTemplate="footer">
-            <button pButton type="button" label="Annuler" (click)="dialogVisible = false"  class="p-button-danger"></button>
+            <button pButton type="button" label="Annuler" (click)="dialogVisible = false"
+                class="p-button-danger"></button>
             <p-button label="Valider" icon="pi pi-check" (click)="submitService()" class="p-button-primary"></p-button>
         </ng-template>
     </p-dialog>
@@ -78,6 +85,20 @@
                 class="p-button-text"></button>
             <button pButton type="button" label="Enregistrer" (click)="updateService()"
                 class="p-button-primary"></button>
+        </ng-template>
+    </p-dialog>
+    <!-- Delete dialog-->
+    <p-dialog [(visible)]="deleteDialogVisible" header="Confirmation" [modal]="true" [style]="{width: '350px'}">
+        <ng-template pTemplate="content">
+            <div class="confirmation-content">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Êtes-vous sûr de vouloir supprimer ce service ?</span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton type="button" label="Non" (click)="deleteDialogVisible = false"
+                class="p-button-text"></button>
+            <button pButton type="button" label="Oui" (click)="confirmDelete()" class="p-button-danger"></button>
         </ng-template>
     </p-dialog>
 </div>

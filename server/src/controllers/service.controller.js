@@ -28,20 +28,26 @@ router.post(
   }
 );
 
+
 router.get(
   "/",
   async (req, res, next) => {
     try {
-      const page = parseInt(req.query.page) || 0;
+      const page = parseInt(req.query.page) || 1;
       const size = parseInt(req.query.size) || 10;
       let filters = {};
-      if (req.query.filters) {
-          const rawFilters = req.query.filters;
-          filters = filterFactoryService.createFilters(rawFilters);
+      if (req.query.search) {
+          filters.search = req.query.search;
       }
+      if (req.query.filters) {
+          filters = { ...filters, ...filterFactoryService.createFilters(req.query.filters) };
+      }
+
       const services = await serviceService.getAllServices(page, size, filters);
-      const totalElements = await Service.countDocuments(filters);
-      const payload = { services: new Pageable(services, page, size, totalElements) };
+      const totalElements = await Service.countDocuments({ ...filters, status: 'OK' });
+      const payload = { 
+          services: new Pageable(services, page, size, totalElements) 
+      };
       res.json(new ApiResponse(payload));
     } catch (error) {
       next(error);

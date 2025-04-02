@@ -9,7 +9,20 @@ exports.createPrestation = async ({name, price}) => {
 }
 
 exports.getAllPrestations = async (page, size, filters) => {
-    let prestations = await Prestation.find(filters).skip(page).limit(size);
+    const query = {
+        status: 'OK'
+    };
+    if (filters && typeof filters === 'object' && filters.search) {
+        query.name = { $regex: filters.search, $options: 'i' };
+    }
+    const [prestations] = await Promise.all([
+        Prestation.find(query)
+            .skip((page - 1) * size)
+            .limit(size)
+            .sort({ createdAt: -1 })
+            .lean(),
+            Prestation.countDocuments(query)
+    ]);
     return prestations;
 }
 
@@ -25,9 +38,7 @@ exports.updatePrestation = async (id, name, price) => {
 }
 
 exports.deletePrestation = async (id) => {
-    const result = await Prestation.deleteOne({ _id: id });
-    if (result.deletedCount === 0) {
-        throw new Error('Prestation not found');
-    }
-    return { id };
+    let prestation = await Prestation.findById(id);
+    prestation.status = 'Supprime';
+    await prestation.save();
 };

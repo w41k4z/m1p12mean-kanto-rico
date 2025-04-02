@@ -4,6 +4,11 @@ const ServiceSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['OK', 'Supprime'],
+        default: 'OK'
     }
 });
 
