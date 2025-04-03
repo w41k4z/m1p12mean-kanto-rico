@@ -24,12 +24,12 @@ export default [
             },
             {
                 label: 'Prestations',
-                icon: 'pi pi-wrench',
+                icon: 'pi pi-prime',
                 routerLink: ['/manager/prestations'],
             },
             {
                 label: 'Tasks',
-                icon: 'pi pi-wrench',
+                icon: 'pi pi-slack',
                 routerLink: ['/manager/tasks'],
             },
         ],

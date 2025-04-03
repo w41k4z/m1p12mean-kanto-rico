@@ -153,27 +153,7 @@ export class PrestationListComponent implements OnInit {
             }
         });
     }
-    // deletePrestation(prestation: Prestation) {
-    //     this.prestationService.deletePrestation(prestation._id).subscribe({
-    //         next: () => {
-    //             this.prestations = this.prestations.filter(p => p._id !== prestation._id);
-    //             this.totalRecords--;
-                
-    //             this.messageService.add({
-    //                 severity: 'success',
-    //                 summary: 'Success',
-    //                 detail: 'Prestation deleted successfully'
-    //             });
-    //         },
-    //         error: (err) => {
-    //             this.messageService.add({
-    //                 severity: 'error',
-    //                 summary: 'Error',
-    //                 detail: err.error?.message || 'Failed to delete prestation'
-    //             });
-    //         }
-    //     }); 
-    // }
+
     deletePrestation(prestation: any) {
         this.prestationToDelete = prestation;
         this.deleteDialogVisible = true;
