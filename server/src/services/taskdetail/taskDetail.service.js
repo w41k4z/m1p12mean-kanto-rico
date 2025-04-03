@@ -1,4 +1,4 @@
-const TaskDetail = require('../../models/taskDetail.model');
+const TaskDetail = require('../../models/TaskDetail');
 
 exports.getAllTaskDetail = async (page, size, filters) => {
     let tasks = await TaskDetail.find(filters).skip(page).limit(size);
