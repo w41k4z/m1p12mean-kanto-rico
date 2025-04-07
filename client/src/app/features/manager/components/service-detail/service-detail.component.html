@@ -1,0 +1,85 @@
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <h4 class="m-0">Detail du service </h4>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <p-button label="Ajouter prestation" icon="pi pi-plus" class="p-button-success"
+                (click)="openNew()"></p-button>
+        </ng-template>
+    </p-toolbar>
+    <p-table #dt [value]="servicePrestations" [paginator]="true" [rows]="pageSize"
+        [globalFilterFields]="['name','price']" responsiveLayout="scroll">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Liste des prestations</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."
+                        class="w-full sm:w-auto" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="name">Designation <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="price">Prix <p-sortIcon field="price"></p-sortIcon></th>
+                <th style="width: 10%"></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prestation>
+            <tr>
+                <td style="width: 35%; min-width: 7rem;">{{prestation.name}}</td>
+                <td style="width: 35%; min-width: 8rem;">{{prestation.price}}</td>
+                <td>
+                    <div class="flex gap-2">
+                        <button pButton pRipple icon="pi pi-trash"
+                                class="p-button-rounded p-button-sm p-button-text p-button-danger"
+                                (click)="confirmDeleteServicePrestation(prestation)" 
+                                pTooltip="Supprimer de ce service" tooltipPosition="top"></button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog [(visible)]="prestationDialog" [style]="{width: '550px'}" header="Ajout prestation" [modal]="true" class="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="prestation">Prestation</label>
+                <p-dropdown id="prestation" [(ngModel)]="selectedPrestation" [options]="prestations" optionLabel="name"
+                    placeholder="Choisir une prestation" [showClear]="true" [scrollHeight]="'250px'"
+                    panelStyleClass="custom-dropdown-panel" styleClass="w-full">
+                    <ng-template let-prestation pTemplate="item">
+                        <div class="flex align-items-center">
+                            <span>{{prestation.name}}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small *ngIf="errorMessage" class="p-error block mt-2">
+                    <i class="pi pi-exclamation-triangle"></i> {{errorMessage}}
+                </small>
+            </div>
+        </ng-template>
+    
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text"
+                [disabled]="saving" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Enregistrer" icon="pi pi-check" class="p-button-text" (click)="savePrestation()">
+                </button>
+        </ng-template>
+    </p-dialog>
+
+    <p-dialog header="Confirmation" [(visible)]="deleteDialogVisible" [style]="{width: '450px'}" [modal]="true">
+        <div class="confirmation-content">
+            <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+            <span>Êtes-vous sûr de vouloir supprimer cette prestation du service?</span>
+        </div>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Non" icon="pi pi-times" class="p-button-text"
+                    (click)="deleteDialogVisible = false"></button>
+            <button pButton pRipple label="Oui" icon="pi pi-check" class="p-button-danger"
+                    (click)="deleteServicePrestation()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

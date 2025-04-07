@@ -3,6 +3,7 @@ import { FilterMatchMode } from 'primeng/api';
 import { Service } from 'src/app/core/dto/service';
 import { ServService } from 'src/app/core/services/api/service/serv.service';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-service-list',
@@ -30,6 +31,7 @@ export class ServiceListComponent implements OnInit {
     constructor(
         private servService: ServService,
         private messageService: MessageService,
+        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -152,6 +154,9 @@ export class ServiceListComponent implements OnInit {
         }
         this.deleteDialogVisible = false;
     }
-
+    viewServiceDetails(serviceName: string) {
+        const encodedName = encodeURIComponent(serviceName);
+        this.router.navigate(['/manager/services', encodedName]);
+    }
 
 }

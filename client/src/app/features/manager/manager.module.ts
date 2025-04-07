@@ -18,6 +18,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { DropdownModule } from 'primeng/dropdown';
+import { ServiceDetailsComponent } from './components/service-detail/service-detail.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -28,6 +29,7 @@ registerLocaleData(localeFr, 'fr');
         ServiceListComponent,
         PrestationListComponent,
         TaskListComponent,
+        ServiceDetailsComponent,
     ],
     imports: [
         CommonModule,

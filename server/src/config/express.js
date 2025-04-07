@@ -41,6 +41,7 @@ server.use('/api/services', require('../controllers/service.controller'));
 server.use('/api/tasks', require('../controllers/task.controller'));
 server.use('/api/taskDetails', require('../controllers/detailTask.controller'));
 server.use('/api/notifications', require('../controllers/notificationl.controller'));
+server.use('/api/serviceprestation', require('../controllers/serviceprestation.controlller'));
 
 
 // Error handling

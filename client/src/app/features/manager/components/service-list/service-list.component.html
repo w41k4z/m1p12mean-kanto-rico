@@ -34,7 +34,7 @@
         </ng-template>
 
         <ng-template pTemplate="body" let-service>
-            <tr>
+            <tr (click)="viewServiceDetails(service._id)" class="cursor-pointer">
                 <td>{{ service.name }}</td>
                 <td>
                     <div class="flex gap-2">
